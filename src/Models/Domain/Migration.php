@@ -1,13 +1,13 @@
 <?php
 namespace Lucas\Tcc\Models\Domain;
 
-use Lucas\Tcc\Models\Domain\DataSource\ReadableDataSource;
+use Lucas\Tcc\Models\Domain\DataSource\DataSource;
 use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
 
 class Migration
 {
     public function __construct(
-        private ReadableDataSource $from,
+        private DataSource $from,
         private WritableDataSource $to,
         private array $connections,
     )

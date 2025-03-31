@@ -1,7 +1,7 @@
 <?php
 namespace Lucas\Tcc\Models\Domain\DataSource;
 
-interface WritableDataSource extends ReadableDataSource
+interface WritableDataSource extends DataSource
 {
     public function add(mixed $value): bool;
 }
