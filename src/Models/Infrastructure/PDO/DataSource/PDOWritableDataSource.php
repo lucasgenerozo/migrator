@@ -10,10 +10,9 @@ class PDOWritableDataSource extends PDODataSource implements WritableDataSource
         $column_names = implode(',', array_keys($data));
         $values_holder = implode(', ', array_fill(0, count($data), '?'));
 
-        $this->pdo->prepare("
+        $stmt = $this->pdo->prepare("
             INSERT INTO $this->name ($column_names) VALUES ($values_holder);
         ");
-
-        // TODO: 
+        return $stmt->execute(array_values($data));
     }
 }

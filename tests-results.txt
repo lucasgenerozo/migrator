@@ -4,3 +4,6 @@ PDOData Source
  [x] List by with data set #0
  [x] First by with data set #0
 
+PDOWritable Data Source
+ [x] Add with data set #0
+
