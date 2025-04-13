@@ -12,7 +12,20 @@ class Migration
         private array $connections,
     )
     {
-        
+        $insert_columns = array();
+        $treatments = array();
+
+        foreach ($connections as $connection) {
+            $connection_to = $connection['to'];
+            
+            $insert_columns[] = $connection_to;
+            $treatments[$connection_to] = $connection['tratment'];
+        }
+    }
+
+    public function prepareFunctions(): void
+    {
+
     }
 
     public function prepare(): Migration

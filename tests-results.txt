@@ -7,3 +7,11 @@ PDOData Source
 PDOWritable Data Source
  [x] Add with data set #0
 
+Treatment
+ [x] Treatment exemplo deve funcionar with data set #0
+ [x] Treatment exemplo deve funcionar with data set #1
+ [x] Treatment exemplo deve funcionar with data set #2
+ [x] Treatment exemplo deve funcionar with data set #3
+ [x] Treatment com function string invalida deve lancar exception
+ [x] Treatment com parameters string vazio deve lancar exception
+
