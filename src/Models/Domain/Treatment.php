@@ -4,7 +4,7 @@ namespace Lucas\Tcc\Models\Domain;
 use Exception;
 use InvalidArgumentException;
 
-class Treatment
+class Treatment extends Entity
 {
     private array $parameters;
     private $function;
@@ -56,5 +56,23 @@ class Treatment
         }
         
         return ($this->function)(...$args);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'parameters' => $this->parameters_str,
+            'function' => $this->function_str,
+        ];
+    }
+
+    public static function fromArray(array $data): Treatment
+    {
+        return new Treatment(
+            $data['id'],
+            $data['parameters'],
+            $data['function'],
+        );
     }
 }

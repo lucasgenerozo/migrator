@@ -3,6 +3,7 @@ namespace Lucas\Tcc\Models\Infrastructure\PDO\DataSource;
 
 use Exception;
 use Lucas\Tcc\Models\Domain\DataSource\DataSource;
+use Lucas\Tcc\Models\Domain\SQLOperator;
 use PDO;
 
 /**
@@ -46,14 +47,8 @@ class PDODataSource implements DataSource
 
     public function listBy(array $searches, int $limit = 0): ?array
     {
-        $clauses = [];
-        $values = [];
-        foreach ($searches as $search) {
-            list($column, $operator, $value) = $search;
-            $clauses[] = "($column $operator ?)";
-            $values[] = $value;
-        }
-        $clauses_sql = implode(' AND ', $clauses);
+        $sql_operator = new SQLOperator();
+        list($clauses_sql, $values) = $sql_operator->searchesToWhere($searches);
 
         $limit_sql = $limit > 0 ? "LIMIT $limit" : '';
 
@@ -70,7 +65,13 @@ class PDODataSource implements DataSource
 
     public function firstBy(array $searches): ?array
     {
-        return ($this->listBy($searches, 1))[0];
+        $result = $this->listBy($searches, 1);
+        
+        if (empty($result)) {
+            return null;
+        }
+
+        return $result[0];
     }
 
 }

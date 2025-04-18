@@ -1,0 +1,17 @@
+<?php
+namespace Lucas\Tcc\Models\Domain;
+
+
+abstract class Entity implements ArraySerializable
+{
+    protected ?int $id = null;
+
+    public function setId(int $id) {
+        $this->id = $id;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+}
