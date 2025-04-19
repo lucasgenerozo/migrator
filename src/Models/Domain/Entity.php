@@ -6,7 +6,7 @@ abstract class Entity implements ArraySerializable
 {
     protected ?int $id = null;
 
-    public function setId(int $id) {
+    public function setId(?int $id) {
         $this->id = $id;
     }
 

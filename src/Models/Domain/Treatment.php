@@ -10,10 +10,11 @@ class Treatment extends Entity
     private $function;
 
     public function __construct(
-        private ?int $id,
+        ?int $id,
         private string $parameters_str, 
         private string $function_str
     ) {
+        $this->setId($id);
         $this->setParameters($parameters_str);
         $this->setFunction($function_str);
     }

@@ -6,7 +6,7 @@ class SQLOperator
     private array $existing_clauses = [];
     private array $all_values = [];
 
-    public function searchesToSql(array $searches): array
+    public function searchesToSql(array $searches, bool $useBrackets = true): array
     {
         $clauses = [];
         $values = [];
@@ -17,12 +17,13 @@ class SQLOperator
             if (array_key_exists($column, $this->existing_clauses)) {
                 $count = ++$this->existing_clauses[$column];
             } else {
-                $count = $existing_clauses[$column] = 0;
+                $count = $this->existing_clauses[$column] = 0;
             }
 
             $column_alias = "$column$count";
+            $clause = "$column $operator :$column_alias";
 
-            $clauses[] = "($column $operator :$column_alias)";
+            $clauses[] = $useBrackets ? "($clause)" : $clause;
             $values[":$column_alias"] = $value;
             $this->all_values[":$column_alias"] = $value;
         }
@@ -45,10 +46,17 @@ class SQLOperator
 
     public function searchesToUpdate(array $searches): array
     {
-        $result = $this->searchesToSql($searches);
+        $result = $this->searchesToSql(
+            array_map(
+                fn($key, $value) => [$key, '=', $value],
+                array_keys($searches),
+                $searches,
+            ),
+            useBrackets: false,
+        );
         
         return [
-            implode(',', $result[0]),
+            implode(', ', $result[0]),
             $result[1],
         ];
     }

@@ -7,6 +7,11 @@ PDOData Source
 PDOWritable Data Source
  [x] Add with data set #0
 
+SQLOperator
+ [x] Where clauses devem ser criadas corretamente with data set #0
+ [x] Update clauses devem ser criadas corretamente with data set #0
+ [x] Update e where clauses devem ser criadas corretamente with data set #0
+
 Treatment
  [x] Treatment exemplo deve funcionar with data set #0
  [x] Treatment exemplo deve funcionar with data set #1
