@@ -29,6 +29,11 @@ class PDODataSource implements DataSource
         $this->pdo = $connection;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function listAll(): ?array
     {
         $stmt = $this->pdo->prepare("

@@ -10,6 +10,8 @@ interface DataSource
         ?array $additional = null
     );
 
+    public function getName(): string;
+
     public function listAll(): ?array;
     public function listByCallback(callable $callback): ?array;
     public function listBy(array $searches, int $limit = 0): ?array;
