@@ -62,4 +62,59 @@ class PDOWritableDataSourceTest extends TestCase
             $dataSource->listAll(),
         );
     }
+
+    /** @dataProvider usersPdoDataSource */
+    public function testEdit(PDOWritableDataSource $dataSource): void
+    {
+        $dataSource->edit(
+            [
+                ['id', '=', 2],
+            ],
+            [
+                'name' => 'pdo',
+            ],
+        );
+
+        $expected = [
+            [
+                'id' => 1,
+                'name' => 'foo',
+            ],
+            [
+                'id' => 2,
+                'name' => 'pdo',
+            ],
+            [
+                'id' => 3,
+                'name' => 'php',
+            ],
+        ];
+
+        self::assertEqualsCanonicalizing(
+            $expected,
+            $dataSource->listAll(),
+        );
+    }
+
+    /** @dataProvider usersPdoDataSource */
+    public function testRemove(PDOWritableDataSource $dataSource): void
+    {
+        $dataSource->remove(
+            [
+                ['id', '>=', 2],
+            ]
+        );
+
+        $expected = [
+            [
+                'id' => 1,
+                'name' => 'foo',
+            ],
+        ];
+
+        self::assertEqualsCanonicalizing(
+            $expected,
+            $dataSource->listAll(),
+        );
+    }
 }

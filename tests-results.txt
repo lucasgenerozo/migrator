@@ -6,6 +6,8 @@ PDOData Source
 
 PDOWritable Data Source
  [x] Add with data set #0
+ [x] Edit with data set #0
+ [x] Remove with data set #0
 
 SQLOperator
  [x] Where clauses devem ser criadas corretamente with data set #0
