@@ -1,3 +1,7 @@
+Migration
+ [x] Migration nao deve permitir inicializacao sem connections
+ [x] Migration nao deve permitir que destiny data source nao seja writable data source
+
 PDOData Source
  [x] List all with data set #0
  [x] List by callback with data set #0

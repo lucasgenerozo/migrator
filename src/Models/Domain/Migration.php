@@ -19,6 +19,7 @@ class Migration
         private WritableDataSource $to,
         array $connections,
         private TreatmentRepository $treatmentRepository,
+        private ?array $fromClauses = null,
     )
     {
         $this->setConnections($connections);
@@ -49,13 +50,17 @@ class Migration
 
         foreach ($this->connections as $connection) {
             
+            $connection_to = $connection['to'];
+            $connection_from = $connection['from'];
+
+            // recebe todas as colunas que vão ser inseridas na chave, e no valor a coluna
+            $insert_columns[$connection_from] = $connection_to;
+
             if (!is_null($connection['treatment'])) {
                 $treatment_id = $connection['treatment'];
-                $connection_to = $connection['to'];
 
+                $treatment_columns[$connection_from] = $treatment_id;
                 $treatments[$treatment_id] = $this->treatmentRepository->find($treatment_id);
-                $insert_columns[] = $connection_to;
-                $treatment_columns[$connection_to] = $treatment_id;
             }
         }
 
@@ -68,14 +73,51 @@ class Migration
     {
         $this->prepareFunctions();
 
-
-        # monta a ou as sqls aqui e guarda
-
         return $this;
     }
 
-    public function execute(): bool
+    protected function dataToInsertModel(array $data): array
     {
-        # executa a inserção, por exemplo
+        $insert_model = array();
+
+        foreach ($data as $from_column => $value) {
+            if (!array_key_exists($from_column, $this->insert_columns)) {
+                continue;
+            }
+
+            $to_column = $this->insert_columns[$from_column];
+            
+            $insert_value = $value;
+            if (array_key_exists($from_column, $this->treatment_columns)) {
+                $treatment_id = $this->treatment_columns[$from_column];
+                $treatment = $this->treatments[$treatment_id];
+
+                $insert_value = $treatment($value);
+            }
+
+            $insert_model[$to_column] = $insert_value;
+        }
+
+        return $insert_model;
+    }
+
+    protected function getDataList(): ?array
+    {
+        if (empty($this->fromClauses)) {
+            return $this->from->listBy($this->fromClauses);
+        } 
+
+        return $this->from->listAll();
+    }
+
+    public function execute(): void
+    {
+        $dataList = $this->getDataList();
+
+        foreach ($dataList as $data) {
+            $insert_model = $this->dataToInsertModel($data);
+
+            $this->to->add($insert_model);
+        }
     }
 }
