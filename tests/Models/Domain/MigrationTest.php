@@ -1,5 +1,6 @@
 <?php
 
+use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
 use Lucas\Tcc\Models\Domain\Migration;
 use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDODataSource;
 use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
@@ -168,7 +169,63 @@ class MigrationTest extends TestCase
 
     /** @dataProvider providerMigrationInicializada */
     public function testMigrationDeveTerConexaoDefinidaCorretamente(Migration $migration): void
-    {
+    {   
+        $insert_columns = self::callPrivateProperty($migration, 'insert_columns');
+        $treatments = self::callPrivateProperty($migration, 'treatments');
+        $treatment_columns = self::callPrivateProperty($migration, 'treatment_columns');
 
+        $expected_insert_columns = [
+            'id' => 'IdUsuario',
+            'name' => 'Nome'
+        ];
+
+        $treatmentRepository = self::tratmentRepositoryCreator();
+        $expected_treatments = [
+            2 => $treatmentRepository->find(2),
+        ];
+
+        $expected_treatment_columns = [
+            'name' => 2,
+        ];
+
+        self::assertEqualsCanonicalizing(
+            $expected_insert_columns,
+            $insert_columns,
+        );
+        self::assertEqualsCanonicalizing(
+            $expected_treatments,
+            $treatments,
+        );
+        self::assertEqualsCanonicalizing(
+            $expected_treatment_columns,
+            $treatment_columns,
+        );
+    }
+
+    /** @dataProvider providerMigrationInicializada */
+    public function testMigrationDeveExecutarAMigracaoCorretamente(Migration $migration): void
+    {
+        $migration->execute();
+
+        /** @var WritableDataSource $destinyDataSource */
+        $destinyDataSource = self::callPrivateProperty($migration, 'to');
+
+        self::assertEqualsCanonicalizing(
+            [
+                [
+                    'IdUsuario' => 1,
+                    'Nome' => 'FOO',
+                ],
+                [
+                    'IdUsuario' => 2,
+                    'Nome' => 'BAR',
+                ],
+                [
+                    'IdUsuario' => 3,
+                    'Nome' => 'PHP',
+                ],
+            ],
+            $destinyDataSource->listAll(),
+        );
     }
 }
