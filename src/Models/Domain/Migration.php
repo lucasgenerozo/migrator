@@ -103,7 +103,7 @@ class Migration
 
     protected function getDataList(): ?array
     {
-        if (empty($this->fromClauses)) {
+        if (!empty($this->fromClauses)) {
             return $this->from->listBy($this->fromClauses);
         } 
 
