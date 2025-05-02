@@ -2,6 +2,7 @@
 namespace Lucas\Tcc\Models\Infrastructure\PDO;
 
 use Exception;
+use InvalidArgumentException;
 use Lucas\Tcc\Models\Domain\Database;
 use Lucas\Tcc\Models\Domain\DataSource\DataSource;
 use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDODataSource;
@@ -22,7 +23,7 @@ class PDODatabase implements Database
 
         foreach (array_keys($config) as $key) {
             if (!in_array($key, $required_keys)) {
-                throw new Exception("Required config value missing ($key)");
+                throw new InvalidArgumentException("Required config value missing ($key)");
             }
         } 
 

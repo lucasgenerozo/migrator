@@ -1,5 +1,5 @@
 <?php
-namespace Lucas\Tcc\Models\Domain;
+namespace Lucas\Tcc\Utils;
 
 class SQLOperator
 {

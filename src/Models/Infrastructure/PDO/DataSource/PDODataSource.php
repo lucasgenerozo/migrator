@@ -3,7 +3,7 @@ namespace Lucas\Tcc\Models\Infrastructure\PDO\DataSource;
 
 use Exception;
 use Lucas\Tcc\Models\Domain\DataSource\DataSource;
-use Lucas\Tcc\Models\Domain\SQLOperator;
+use Lucas\Tcc\Utils\SQLOperator;
 use PDO;
 
 /**

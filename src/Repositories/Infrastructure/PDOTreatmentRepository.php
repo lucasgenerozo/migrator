@@ -2,6 +2,7 @@
 namespace Lucas\Tcc\Repositories\Infrastructure;
 
 use Exception;
+use Lucas\Tcc\Exceptions\ResourceNotFound;
 use Lucas\Tcc\Models\Domain\Treatment;
 use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
 use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
@@ -47,7 +48,10 @@ class PDOTreatmentRepository implements TreatmentRepository
         ]);
         
         if (is_null($treatmentData)) {
-            throw new Exception('Treatment not found');
+            throw new ResourceNotFound(
+                self::class,
+                ['id', '=', $id],
+            );
         }
 
         return self::hydrateTreatment($treatmentData);

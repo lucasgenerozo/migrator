@@ -34,16 +34,13 @@ class Treatment extends Entity
     public function setFunction(string $function_str): void
     {
         try {
-            
             $func = "return function ({$this->parameters_str}) {
                 {$function_str}
             };";
-            // echo $func;
-
             $this->function = eval($func);
         } catch (Exception $e) {
-            throw new Exception(
-                'Erro na criação da função', 
+            throw new InvalidArgumentException(
+                'Invalid function string', 
                 400,
                 $e
             );

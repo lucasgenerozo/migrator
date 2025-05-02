@@ -2,7 +2,7 @@
 namespace Lucas\Tcc\Models\Infrastructure\PDO\DataSource;
 
 use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
-use Lucas\Tcc\Models\Domain\SQLOperator;
+use Lucas\Tcc\Utils\SQLOperator;
 
 class PDOWritableDataSource extends PDODataSource implements WritableDataSource
 {
