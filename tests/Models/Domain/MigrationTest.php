@@ -64,6 +64,7 @@ class MigrationTest extends TestCase
         $pdo->exec("
             CREATE TABLE treatments (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,
                 parameters TEXT,
                 function TEXT
             );
@@ -71,10 +72,10 @@ class MigrationTest extends TestCase
 
         $pdo->query('
             INSERT INTO treatments 
-            (id, parameters, function) 
+            (id, name, parameters, function) 
             VALUES 
-            (1, "$input, $multiplier", "return $input * $multiplier;"),
-            (2, "$input", "return strtoupper($input);");
+            (1, "multiplier", "$input, $multiplier", "return $input * $multiplier;"),
+            (2, "toUpper", "$input", "return strtoupper($input);");
         ');
 
         return new PDOTreatmentRepository(
@@ -101,6 +102,7 @@ class MigrationTest extends TestCase
         ];
         
         $migration = new Migration(
+            null,
             $originDataSource,
             $destinyDataSource,
             $connections,
@@ -144,6 +146,7 @@ class MigrationTest extends TestCase
         $treatmentRepository = self::tratmentRepositoryCreator();
 
         new Migration(
+            null,
             $originDataSource,
             $originDataSource,
             [],
@@ -160,6 +163,7 @@ class MigrationTest extends TestCase
         $treatmentRepository = self::tratmentRepositoryCreator();
 
         new Migration(
+            null,
             $originDataSource,
             $destinyDataSource,
             [],

@@ -2,28 +2,44 @@
 namespace Lucas\Tcc\Models\Infrastructure\PDO\DataSource;
 
 use Exception;
+use Lucas\Tcc\Exceptions\InvalidConfiguration;
 use Lucas\Tcc\Models\Domain\DataSource\DataSource;
 use Lucas\Tcc\Utils\SQLOperator;
 use PDO;
+use TypeError;
 
 /**
  * O modo do FETCH retornado deve ser definido como default no PDO
+ * 
  */
 class PDODataSource implements DataSource
 {
     protected PDO $pdo;
 
-    /**
-     * @throws Exception
-     */
     public function __construct(
         protected string $name,
         mixed $connection,
         protected ?array $with = null,
         ?array $additional = null,
     ) {
+        $this->setPdo($connection);
+    }
+
+    /**
+     * Como a interface DataSource nao pode especificar o tipo da connection, ela tem que ser validada nas implementações
+     * 
+     * @throws TypeError
+     * @throws InvalidConfiguration
+     */
+    private function setPdo(mixed $connection): void
+    {
         if (!($connection instanceof PDO)) {
-            throw new Exception('CONNECTION MUST BE A PDO INSTANCE');
+            throw new TypeError('Connection must be a PDO instance');
+        }
+
+        $pdo_fetch_mode = $connection->getAttribute(PDO::ATTR_DEFAULT_FETCH_MODE);
+        if ($pdo_fetch_mode != PDO::FETCH_ASSOC) {
+            throw new InvalidConfiguration("PDO fetch mode must be 'ASSOC");
         }
 
         $this->pdo = $connection;
@@ -37,7 +53,7 @@ class PDODataSource implements DataSource
     public function listAll(): ?array
     {
         $stmt = $this->pdo->prepare("
-            SELECT *
+            SELECT $this->name.*
             FROM   $this->name
         ");
         $stmt->execute();
@@ -58,7 +74,7 @@ class PDODataSource implements DataSource
         $limit_sql = $limit > 0 ? "LIMIT $limit" : '';
 
         $stmt = $this->pdo->prepare("
-            SELECT *
+            SELECT $this->name.*
             FROM   $this->name
             WHERE $clauses_sql
             $limit_sql

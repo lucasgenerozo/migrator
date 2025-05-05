@@ -6,7 +6,7 @@ use Lucas\Tcc\Models\Domain\DataSource\DataSource;
 use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
 use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
 
-class Migration
+class Migration extends Entity
 {
     private array $insert_columns;
     private array $treatments;
@@ -15,6 +15,7 @@ class Migration
     private array $connections;
 
     public function __construct(
+        ?int $id,
         private DataSource $from,
         private WritableDataSource $to,
         array $connections,
@@ -22,6 +23,7 @@ class Migration
         private ?array $fromClauses = null,
     )
     {
+        $this->setId($id);
         $this->setConnections($connections);
         $this->prepare();
     }
@@ -119,5 +121,27 @@ class Migration
 
             $this->to->add($insert_model);
         }
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'from' => $this->from->getName(),
+            'to' => $this->from->getName(),
+            'connections' => $this->connections,
+        ];
+    }
+
+    public static function fromArray(array $data): mixed
+    {
+        return new Migration(
+            $data['id'],
+            $data['from'],
+            $data['to'],
+            $data['connections'],
+            $data['treatmentRepository'],
+            $data['fromClauses'],
+        );
     }
 }

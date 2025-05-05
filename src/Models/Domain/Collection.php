@@ -1,17 +1,16 @@
 <?php
 namespace Lucas\Tcc\Models\Domain;
 
-use Lucas\Tcc\Repositories\Domain\DatabaseRepository;
-
-class Collection
+class Collection extends Entity
 {
     public function __construct(
-        private ?int $id,
+        ?int $id,
         private Database $origin,
         private Database $destiny,
-        private array $migrations,
+        private ?array $migrations = null,
     )
     {
+        $this->setId($id);
     }
 
     public function getOriginDatabase(): Database
@@ -29,6 +28,14 @@ class Collection
         return $this->migrations;
     }
 
+    /**
+     * @param Migration[] $migrations
+     */
+    public function setMigrations(array $migrations): void
+    {
+        $this->migrations = $migrations;
+    }
+
     private function prepareMigrations()
     {
         $migrations = $this->getMigrations();
@@ -38,11 +45,29 @@ class Collection
             $from = $this->getOriginDatabase()->getDataSource($migration->from, $migration->fromWith);
             $to = $this->getDestinyDatabase()->getDataSource($migration->to, $migration->toWith);
 
-            $this->migrations[] = new Migration(
+            /*$this->migrations[] = new Migration(
                 $from,
                 $to,
                 $migration->connections
-            );
+            );*/
         }
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+        ];
+    }
+
+    public static function fromArray(array $data): mixed
+    {
+        return new Collection(
+            $data['id'],
+            $data['origin'],
+            $data['destiny'],
+            $data['migrations'],
+        );
+    }
+
 }

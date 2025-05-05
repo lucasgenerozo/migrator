@@ -7,7 +7,7 @@ class ResourceNotFound extends Exception
 {
     public function __construct(
         string $resource_name,
-        array $search,
+        array $search = [],
     )
     {
         list($column, $operator, $value) = $search;

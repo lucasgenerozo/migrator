@@ -9,6 +9,7 @@ class TreatmentTest extends TestCase
     {
         $treatment = new Treatment(
             null,
+            'multiplier',
             '$input, $multiplier',
             'return $input * $multiplier;'
         );
@@ -42,6 +43,7 @@ class TreatmentTest extends TestCase
 
         $treatment = new Treatment(
             null,
+            'multiplier',
             '$input, $multiplier',
             'retur input * multiplier'
         );
@@ -53,6 +55,7 @@ class TreatmentTest extends TestCase
 
         $treatment = new Treatment(
             null,
+            'multiplier',
             '',
             'return input * multiplier'
         );

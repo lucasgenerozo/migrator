@@ -11,6 +11,7 @@ class Treatment extends Entity
 
     public function __construct(
         ?int $id,
+        private string $name,
         private string $parameters_str, 
         private string $function_str
     ) {
@@ -60,6 +61,7 @@ class Treatment extends Entity
     {
         return [
             'id' => $this->id,
+            'name' => $this->name,
             'parameters' => $this->parameters_str,
             'function' => $this->function_str,
         ];
@@ -69,6 +71,7 @@ class Treatment extends Entity
     {
         return new Treatment(
             $data['id'],
+            $data['name'],
             $data['parameters'],
             $data['function'],
         );
