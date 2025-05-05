@@ -6,7 +6,8 @@ use Lucas\Tcc\Models\Domain\Collection;
 interface CollectionRepository
 {
     public function list(): ?array;
+    public function listWithMigrations(): ?array;
     public function find(int $id): ?Collection;
-    public function save(Collection $database): void;
-    public function remove(Collection $database): void;
+    public function save(Collection &$collection): void;
+    public function remove(int $id): void;
 }

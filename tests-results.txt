@@ -10,6 +10,16 @@ PDOData Source
  [x] List by with data set #0
  [x] First by with data set #0
 
+PDODatabase Type Repository
+ [x] Repository deve listar corretamente
+
+PDOTreatment Repository
+ [x] Repository deve listar corretamente with data set #0
+ [x] Repository deve inserir registro corretamente e atualizar id with data set #0
+ [x] Repository deve atualizar registro corretamente e nao atualizar id with data set #0
+ [x] Repository deve remover registro corretamente with data set #0
+ [x] Repository deve encontrar registro corretamente with data set #0
+
 PDOWritable Data Source
  [x] Add with data set #0
  [x] Edit with data set #0

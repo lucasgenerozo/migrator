@@ -3,32 +3,31 @@ namespace Lucas\Tcc\Models\Domain;
 
 use DI\Container;
 use Exception;
+use Lucas\Tcc\Exceptions\ResourceNotFound;
+use Lucas\Tcc\Models\Domain\DataSource\DataSource;
+use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
 use Lucas\Tcc\Repositories\Domain\CollectionRepository;
+use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
 
 class Interpreter
 {
 
-    private Collection $collection;
-
     private CollectionRepository $collectionRepository;
+    private TreatmentRepository $treatmentRepository;
 
+    private Collection $collection;
+    private array $json;
     private array $migrations;
+    private array $connections;
 
     public function __construct(
         private Container $container,
-        string $json,
+        int $id_collection
     )
     {
         $this->collectionRepository = $container->get(CollectionRepository::class);
+        $this->treatmentRepository = $container->get(TreatmentRepository::class);
         
-        $this->loadJson($json);
-    }
-
-    private function loadJson(string $json): void
-    {
-        // aqui tem q definir esses ids
-        $id_collection = -1;
-
         $this->loadCollection($id_collection);
     }
 
@@ -43,24 +42,7 @@ class Interpreter
         $this->collection = $this->collectionRepository->find($id);
 
         if (is_null($this->collection)) {
-            throw new Exception('Collection not found');
-        }
-    }
-
-    private function prepareMigrations()
-    {
-        $this->migrations = array();
-
-        foreach($this->collection->getMigrations() as $migration) {
-
-            $from = $this->collection->getOriginDatabase()->getDataSource($migration->from, $migration->fromWith);
-            $to = $this->collection->getDestinyDatabase()->getDataSource($migration->to, $migration->toWith);
-
-            $this->migrations[] = new Migration(
-                $from,
-                $to,
-                $migration->connections
-            );
+            throw new ResourceNotFound(Collection::class);
         }
     }
 

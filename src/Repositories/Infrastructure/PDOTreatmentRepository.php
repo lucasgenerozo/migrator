@@ -1,7 +1,6 @@
 <?php
 namespace Lucas\Tcc\Repositories\Infrastructure;
 
-use Exception;
 use Lucas\Tcc\Exceptions\ResourceNotFound;
 use Lucas\Tcc\Models\Domain\Treatment;
 use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
@@ -24,6 +23,7 @@ class PDOTreatmentRepository implements TreatmentRepository
     {
         return new Treatment(
             $data['id'],
+            $data['name'],
             $data['parameters'],
             $data['function'],
         );

@@ -1,40 +1,44 @@
 {
 	"collection": 1,
-	"from": {
-        "dataSource": {
-            "identifier": "pessoa",
-            "clause": [
+    "migrations": [
+        {
+            "from": {
+                "dataSource": {
+                    "identifier": "pessoa",
+                    "clauses": [
+                        {
+                            "field": "IdInstituicao",
+                            "operator": "=",
+                            "value": "51"
+                        },
+                        {
+                            "field": "Excluido",
+                            "operator": "=",
+                            "value": "N"
+                        }
+                    ]
+                },
+                "with": []
+            },
+            "to": {
+                "dataSource": {
+                    "identifier": "pessoa",
+                    "clauses": null
+                },
+                "with": []
+            },
+            "connections": [
                 {
-                    "field": "IdInstituicao",
-                    "operator": "=",
-                    "value": "51"
+                    "from": "IdPessoa",
+                    "to": "id_origem",
+                    "treatment": 123
                 },
                 {
-                    "field": "Excluido",
-                    "operator": "=",
-                    "value": "N"
+                    "from": "NomeRazaoSocial",
+                    "to": "nome",
+                    "treatment": null
                 }
             ]
-        },
-        "with": []
-	},
-    "to": {
-        "dataSource": {
-            "identifier": "pessoa",
-            "clause": null
-        },
-        "with": []
-    },
-    "connections": [
-        {
-            "from": "IdPessoa",
-            "to": "id_origem",
-            "treatment": 123
-        },
-        {
-            "from": "NomeRazaoSocial",
-            "to": "nome",
-            "treatment": null
         }
     ]
 }
