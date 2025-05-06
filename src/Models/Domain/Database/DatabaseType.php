@@ -14,6 +14,11 @@ class DatabaseType extends Entity
         $this->setId($id);
     }
 
+    public function isWritable(): bool
+    {
+        return $this->writable;
+    }
+
     public function toArray(): array
     {
         return [

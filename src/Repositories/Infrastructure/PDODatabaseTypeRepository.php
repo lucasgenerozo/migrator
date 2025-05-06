@@ -1,6 +1,7 @@
 <?php
 namespace Lucas\Tcc\Repositories\Infrastructure;
 
+use Lucas\Tcc\Exceptions\ResourceNotFound;
 use Lucas\Tcc\Models\Domain\Database\DatabaseType;
 use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
 use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
@@ -38,5 +39,21 @@ class PDODatabaseTypeRepository implements DatabaseTypeRepository
         }
 
         return $typeList;
+    }
+
+    public function find(int $id): DatabaseType
+    {
+        $typeData = $this->dataSource->firstBy([
+            ['id', '=', $id],
+        ]);
+
+        if (empty($typeData)) {
+            throw new ResourceNotFound(
+                DatabaseType::class,
+                ['id', '=', $id],
+            );
+        }
+
+        return self::hydrateDatabaseType($typeData);
     }
 }

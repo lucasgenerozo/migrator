@@ -7,6 +7,6 @@ class InvalidConfiguration extends Exception
 {
     public function __construct(string $message)
     {
-        self::__construct($message);
+        parent::__construct($message);
     }
 }

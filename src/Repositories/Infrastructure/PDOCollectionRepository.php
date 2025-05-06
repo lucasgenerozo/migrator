@@ -4,6 +4,7 @@ use Lucas\Tcc\Exceptions\ResourceNotFound;
 use Lucas\Tcc\Models\Domain\Collection;
 use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
 use Lucas\Tcc\Repositories\Domain\CollectionRepository;
+use Lucas\Tcc\Repositories\Domain\DatabaseRepository;
 use Lucas\Tcc\Repositories\Domain\MigrationRepository;
 
 class PDOCollectionRepository implements CollectionRepository
@@ -12,6 +13,7 @@ class PDOCollectionRepository implements CollectionRepository
 
     public function __construct(
         private PDO $pdo,
+        private DatabaseRepository $databaseRepository,
         private MigrationRepository $migrationRepository,
     ) {
         $this->dataSource = new WritableDataSource(
@@ -30,7 +32,7 @@ class PDOCollectionRepository implements CollectionRepository
         );
     }
 
-    public function find(int $id): ?Collection
+    public function find(int $id): Collection
     {
         $data = $this->dataSource->listBy([
             ['id', '=', $id],
@@ -43,7 +45,19 @@ class PDOCollectionRepository implements CollectionRepository
             );
         }
 
+        $data['origin'] = $this->databaseRepository->find($data['database_origin']);
+        $data['destiny'] = $this->databaseRepository->find($data['database_destiny']);
+
         return self::hydrateCollection($data);
+    }
+
+    public function findWithMigration(int $id): Collection
+    {
+        $collection = $this->find($id);
+        $migrations = $this->migrationRepository->listByCollection($collection);
+        $collection->setMigrations($migrations);
+
+        return $collection;
     }
 
     public function list(): ?array
@@ -89,21 +103,5 @@ class PDOCollectionRepository implements CollectionRepository
         $this->dataSource->remove([
             ['id', '=', $id],
         ]);
-    }
-
-    public function listWithMigrations(): ?array
-    {
-        $collectionDataList = $this->dataSource->listAll();
-        $collectionList = [];
-
-        foreach ($collectionDataList as $collectionData) {
-            $collectionData['origin'] = ; // pegar do DatabaseRepository;
-            $collectionData['destiny'] = ; // pegar do DatabaseRepository;
-
-            $collection    = self::hydrateCollection($collectionData);
-            $migrationList = $this->migrationRepository->listByCollection($collection);
-
-            $collection->setMigrations($migrationList);
-        }
     }
 }

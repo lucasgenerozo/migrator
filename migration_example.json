@@ -3,29 +3,25 @@
     "migrations": [
         {
             "from": {
-                "dataSource": {
-                    "identifier": "pessoa",
-                    "clauses": [
-                        {
-                            "field": "IdInstituicao",
-                            "operator": "=",
-                            "value": "51"
-                        },
-                        {
-                            "field": "Excluido",
-                            "operator": "=",
-                            "value": "N"
-                        }
-                    ]
-                },
-                "with": []
+                "identifier": "pessoa",
+                "clauses": [
+                    {
+                        "field": "IdInstituicao",
+                        "operator": "=",
+                        "value": "51"
+                    },
+                    {
+                        "field": "Excluido",
+                        "operator": "=",
+                        "value": "N"
+                    }
+                ],
+                "with": null
             },
             "to": {
-                "dataSource": {
-                    "identifier": "pessoa",
-                    "clauses": null
-                },
-                "with": []
+                "identifier": "pessoas",
+                "clauses": null,
+                "with": null
             },
             "connections": [
                 {

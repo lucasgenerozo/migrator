@@ -15,13 +15,7 @@ CREATE TABLE databases (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     type_id INTEGER,
     name TEXT,
-);
-
-CREATE TABLE database_options (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    database_id INTEGER,
-    name TEXT,
-    value TEXT,
+    config TEXT
 );
 
 CREATE TABLE collections (

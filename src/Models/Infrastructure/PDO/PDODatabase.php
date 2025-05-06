@@ -7,6 +7,7 @@ use Lucas\Tcc\Models\Domain\Database\DatabaseType;
 use Lucas\Tcc\Models\Domain\DataSource\DataSource;
 use Lucas\Tcc\Models\Domain\Entity;
 use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDODataSource;
+use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
 use PDO;
 
 class PDODatabase extends Entity implements Database
@@ -21,11 +22,16 @@ class PDODatabase extends Entity implements Database
     )
     {
         $this->setId($id);
+        $this->setConnectionByConfig($config);
+    }
 
+    private function setConnectionByConfig(array $config): void
+    {
         $required_keys = ['dsn', 'user', 'password'];
+        $config_keys = array_keys($config);
 
-        foreach (array_keys($config) as $key) {
-            if (!in_array($key, $required_keys)) {
+        foreach ($required_keys as $key) {
+            if (!in_array($key, $config_keys)) {
                 throw new InvalidArgumentException("Required config value missing ($key)");
             }
         } 
@@ -35,14 +41,28 @@ class PDODatabase extends Entity implements Database
             $config['user'],
             $config['password'],
         );
+        $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public function getDataSource(string $name, ?array $with = null): ?DataSource
     {
+        if ($this->type->isWritable()) {
+            return new PDOWritableDataSource(
+                $name,
+                $this->connection,
+                $with
+            );
+        }
+        
         return new PDODataSource(
             $name,
             $this->connection,
-            $with,
+            $with
         );
     }
 
@@ -60,7 +80,7 @@ class PDODatabase extends Entity implements Database
     {
         return new PDODatabase(
             $data['id'],
-            $data['driver'],
+            $data['type'],
             $data['name'],
             $data['config'],
         );

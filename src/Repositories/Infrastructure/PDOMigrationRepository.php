@@ -41,13 +41,17 @@ class PDOMigrationRepository implements MigrationRepository
     public function listByCollection(Collection $collection): ?array
     {
         $migrationDataList = $this->dataSource->listBy([
-            ['collection', '=', $collection->getId()],
+            ['collection_id', '=', $collection->getId()],
         ]);
         $migrationList = [];
 
         foreach ($migrationDataList as $migrationData) {
-            $migrationData['from'] = $collection->getOriginDatabase()->getDataSource($migrationData['from']);
-            $migrationData['to'] = $collection->getDestinyDatabase()->getDataSource($migrationData['to']);
+
+            $json = json_decode($migrationData['json'], flags: JSON_THROW_ON_ERROR);
+
+            $migrationData['from'] = $collection->getOriginDatabase()->getDataSource($json->from->identifier, $json->from->with);
+            $migrationData['to'] = $collection->getDestinyDatabase()->getDataSource($json->to->identifier, $json->to->with);
+            $migrationData['connections'] = $json->connections;
 
             $migrationList[] = $this->hydrateMigration($migrationData);
         }

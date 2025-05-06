@@ -39,7 +39,7 @@ class PDODataSource implements DataSource
 
         $pdo_fetch_mode = $connection->getAttribute(PDO::ATTR_DEFAULT_FETCH_MODE);
         if ($pdo_fetch_mode != PDO::FETCH_ASSOC) {
-            throw new InvalidConfiguration("PDO fetch mode must be 'ASSOC");
+            throw new InvalidConfiguration("PDO fetch mode must be 'ASSOC'");
         }
 
         $this->pdo = $connection;

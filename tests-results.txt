@@ -9,9 +9,24 @@ PDOData Source
  [x] List by callback with data set #0
  [x] List by with data set #0
  [x] First by with data set #0
+ [x] Data source nao deve permitir inicializacao com p d o sem fetch mode como assoc
+
+PDODatabase
+ [x] Database nao pode ser iniciada com key dsn faltando na config
+ [x] Database nao pode ser iniciada com key user faltando na config
+ [x] Database nao pode ser iniciada com key password faltando na config
+ [x] Database com tipo writable deve retornar data source writable
+ [x] Database sem tipo writable deve retornar data source
+
+PDODatabase Repository
+ [x] Repositorio deve encontrar registro corretamente with data set #0
+ [x] Repositorio deve lancar excecao caso nao encontre registro with data set #0
 
 PDODatabase Type Repository
  [x] Repository deve listar corretamente
+
+PDOMigration Repository
+ [x] Repository deve listar migracoes de uma collection corretamente
 
 PDOTreatment Repository
  [x] Repository deve listar corretamente with data set #0

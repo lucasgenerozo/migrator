@@ -1,5 +1,6 @@
 <?php
 
+use Lucas\Tcc\Exceptions\InvalidConfiguration;
 use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDODataSource;
 use PHPUnit\Framework\TestCase;
 
@@ -110,6 +111,16 @@ class PDODataSourceTest extends TestCase
             $dataSource->firstBy([
                 ['id', '<', '3'],
             ]),
+        );
+    }
+
+    public function testDataSourceNaoDevePermitirInicializacaoComPDOSemFetchModeComoAssoc(): void
+    {
+        $this->expectException(InvalidConfiguration::class);
+        
+        new PDODataSource(
+            'users',
+            new PDO('sqlite::memory:')
         );
     }
 }

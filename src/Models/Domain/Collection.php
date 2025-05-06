@@ -1,6 +1,8 @@
 <?php
 namespace Lucas\Tcc\Models\Domain;
 
+use Lucas\Tcc\Models\Domain\Database\Database;
+
 class Collection extends Entity
 {
     public function __construct(
