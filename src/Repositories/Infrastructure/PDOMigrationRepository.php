@@ -40,8 +40,14 @@ class PDOMigrationRepository implements MigrationRepository
      */
     public function listByCollection(Collection $collection): ?array
     {
+        $collection_id = $collection->getId();
+
+        if (is_null($collection_id)) {
+            return [];
+        }
+
         $migrationDataList = $this->dataSource->listBy([
-            ['collection_id', '=', $collection->getId()],
+            ['collection_id', '=', $collection_id],
         ]);
         $migrationList = [];
 

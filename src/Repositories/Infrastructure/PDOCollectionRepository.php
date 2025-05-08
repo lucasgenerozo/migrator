@@ -75,8 +75,8 @@ class PDOCollectionRepository implements CollectionRepository
     private function insert(Collection &$collection): void
     {
         $collection->setId(
-        $this->dataSource->add(
-            $collection->toArray()
+            $this->dataSource->add(
+                $collection->toArray()
             )
         );
     }

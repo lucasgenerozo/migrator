@@ -1,6 +1,10 @@
 <?php
 
-use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
+use Lucas\Tcc\Models\Domain\Collection;
+use Lucas\Tcc\Models\Domain\Database\DatabaseType;
+use Lucas\Tcc\Models\Domain\Migration;
+use Lucas\Tcc\Models\Infrastructure\PDO\PDODatabase;
+use Lucas\Tcc\Repositories\Infrastructure\PDOMigrationRepository;
 use Lucas\Tcc\Repositories\Infrastructure\PDOTreatmentRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -24,6 +28,19 @@ class PDOMigrationRepositoryTest extends TestCase
                 name TEXT,
                 writable INTEGER /* 1 = SIM, 0 = NAO */
             );
+
+            CREATE TABLE collections (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                database_origin INTEGER,
+                database_destiny INTEGER
+            );
+
+            CREATE TABLE migrations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                collection_id INTEGER,
+                json TEXT,
+                status INTEGER,
+            );
         ");
         $pdo->query("
             INSERT INTO database_types (id, name, writable) VALUES 
@@ -34,22 +51,119 @@ class PDOMigrationRepositoryTest extends TestCase
         $pdo->query("
             INSERT INTO databases (id, type_id, name, config) VALUES
             (1, 1, 'Dump importado', '{\"dsn\": \"sqlite::memory:\",\"user\":\"\",\"password\":\"\"}'),
-            (2, 2, 'Master', '{\"dsn\": \"sqlite::memory:\",\"user\":\"\",\"password\":\"\"}'); 
+            (2, 2, 'Origem', '{\"dsn\": \"sqlite::memory:\",\"user\":\"\",\"password\":\"\"}'); 
+            (3, 2, 'Destino', '{\"dsn\": \"sqlite::memory:\",\"user\":\"\",\"password\":\"\"}'); 
+        ");
+        $pdo->query("
+            INSERT INTO collections (id, database_origin, database_destiny) VALUES
+            (1, 2, 3),
+            (2, 1, 2);
+        ");
+
+        $json = addslashes('{"from": {"identifier": "pessoa","clauses": [{"field": "IdInstituicao","operator": "=","value": "51"},{"field": "Excluido","operator": "=","value": "N"}],"with": null},"to": {"identifier": "pessoas","clauses": null,"with": null},"connections": [{"from": "IdPessoa","to": "id_origem","treatment": 123},{"from": "NomeRazaoSocial","to": "nome","treatment": null}]}');
+
+        $pdo->query("
+            INSERT INTO migrations (id, collection_id, json, status) VALUES
+            (1, 1, '$json', 0),
+            (2, 1, '$json', 0);
         ");
 
         return $pdo;
     }
 
-    public function treatmentRepositoryCreator(): TreatmentRepository
+    public static function providerMigrationRepository(): array
     {
-        return new PDOTreatmentRepository(self::sqlitePDO());
+        $pdo = self::sqlitePDO();
+
+        return [
+            [new PDOMigrationRepository(
+                $pdo,
+                new PDOTreatmentRepository($pdo),
+            )],
+        ];
     }
 
-    public function testRepositoryDeveListarMigracoesDeUmaCollectionCorretamente(): void
+    /** @dataProvider providerMigrationRepository */
+    public function testRepositoryDeveListarMigracoesDeUmaCollectionCorretamente(PDOMigrationRepository $repository): void
     {
-        // TODO: Implementar
-    }
+        $databaseType = new DatabaseType(
+            2,
+            'SQL',
+            true
+        );
+        $databaseConfig = [
+            'dsn' => 'sqlite::memory:',
+            'user' => '',
+            'password' => '',
+        ];
 
+        $collection  = new Collection(
+            1,
+            new PDODatabase(
+                2,
+                $databaseType,
+                'Origem',
+                $databaseConfig,
+            ),
+            new PDODatabase(
+                3,
+                $databaseType,
+                'Destino',
+                $databaseConfig,
+            ),
+            null
+        );
+
+        $migrationList = $repository->listByCollection($collection);
+        
+        self::assertCount(
+            2,
+            $migrationList,
+        );
+
+        $migrationExpectedTreatmentRepository = new PDOTreatmentRepository(self::sqlitePDO());
+        $migrationExpectedConnections = [
+            [
+                'from' => 'IdPessoa',
+                'to' => 'id_origem',
+                'treatment' => 123,
+            ],
+            [
+                'from' => 'NomeRazaoSocial',
+                'to' => 'nome',
+                'treatment' => null,
+            ],
+        ];
+        $migrationExpectedList = [
+            new Migration(
+                1,
+                $collection->getOriginDatabase()->getDataSource('pessoa', []),
+                $collection->getDestinyDatabase()->getDataSource('pessoas', []),
+                $migrationExpectedConnections,
+                $migrationExpectedTreatmentRepository,
+            ),
+            new Migration(
+                2,
+                $collection->getOriginDatabase()->getDataSource('pessoa', []),
+                $collection->getDestinyDatabase()->getDataSource('pessoas', []),
+                $migrationExpectedConnections,
+                $migrationExpectedTreatmentRepository,
+            ),
+        ];
     
+        foreach ($migrationExpectedList as $index => $migrationExpected) {
+            $migration = $migrationList[$index];
+
+            self::assertEquals(
+                $migrationExpected->getId(),
+                $migration->getId(),
+            );
+
+            self::assertEquals(
+                $migrationExpected->getId(),
+                $migration->getId(),
+            );
+        }
+    }
 
 }
