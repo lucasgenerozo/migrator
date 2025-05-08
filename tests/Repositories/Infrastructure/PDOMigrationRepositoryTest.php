@@ -3,6 +3,7 @@
 use Lucas\Tcc\Models\Domain\Collection;
 use Lucas\Tcc\Models\Domain\Database\DatabaseType;
 use Lucas\Tcc\Models\Domain\Migration;
+use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDODataSource;
 use Lucas\Tcc\Models\Infrastructure\PDO\PDODatabase;
 use Lucas\Tcc\Repositories\Infrastructure\PDOMigrationRepository;
 use Lucas\Tcc\Repositories\Infrastructure\PDOTreatmentRepository;
@@ -16,6 +17,13 @@ class PDOMigrationRepositoryTest extends TestCase
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->exec("
+            CREATE TABLE treatments (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,
+                parameters TEXT,
+                function TEXT
+            );
+
             CREATE TABLE databases (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 type_id INTEGER,
@@ -39,9 +47,13 @@ class PDOMigrationRepositoryTest extends TestCase
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 collection_id INTEGER,
                 json TEXT,
-                status INTEGER,
+                status INTEGER
             );
         ");
+        $pdo->query('
+            INSERT INTO treatments (id, name, parameters, function) VALUES
+            (123, "multiplier", "$input, $multiplier", "return $input * $multiplier;");
+        ');
         $pdo->query("
             INSERT INTO database_types (id, name, writable) VALUES 
             (1, 'JSON', 0),
@@ -60,7 +72,7 @@ class PDOMigrationRepositoryTest extends TestCase
             (2, 1, 2);
         ");
 
-        $json = addslashes('{"from": {"identifier": "pessoa","clauses": [{"field": "IdInstituicao","operator": "=","value": "51"},{"field": "Excluido","operator": "=","value": "N"}],"with": null},"to": {"identifier": "pessoas","clauses": null,"with": null},"connections": [{"from": "IdPessoa","to": "id_origem","treatment": 123},{"from": "NomeRazaoSocial","to": "nome","treatment": null}]}');
+        $json = '{"from": {"identifier": "pessoa","clauses": [{"field": "IdInstituicao","operator": "=","value": "51"},{"field": "Excluido","operator": "=","value": "N"}],"with": null},"to": {"identifier": "pessoas","clauses": null,"with": null},"connections": [{"from": "IdPessoa","to": "id_origem","treatment": 123},{"from": "NomeRazaoSocial","to": "nome","treatment": null}]}';
 
         $pdo->query("
             INSERT INTO migrations (id, collection_id, json, status) VALUES
@@ -81,6 +93,17 @@ class PDOMigrationRepositoryTest extends TestCase
                 new PDOTreatmentRepository($pdo),
             )],
         ];
+    }
+
+    private static function callPrivateProperty(
+        mixed $object, 
+        string $property
+    ): mixed {
+        $reflection = new ReflectionClass($object);
+        $property = $reflection->getProperty($property);
+        $property->setAccessible(true);
+    
+        return $property->getValue($object);
     }
 
     /** @dataProvider providerMigrationRepository */
@@ -159,9 +182,37 @@ class PDOMigrationRepositoryTest extends TestCase
                 $migration->getId(),
             );
 
+            /** @var PDODataSource */
+            $expectedFromDataSource = self::callPrivateProperty($migrationExpected, 'from');
+            /** @var PDODataSource */
+            $fromDataSource = self::callPrivateProperty($migration, 'from');
+
             self::assertEquals(
-                $migrationExpected->getId(),
-                $migration->getId(),
+                $expectedFromDataSource->getName(),
+                $fromDataSource->getName(),
+            );
+
+            /** @var PDODataSource */
+            $expectedToDataSource = self::callPrivateProperty($migrationExpected, 'to');
+            /** @var PDODataSource */
+            $toDataSource = self::callPrivateProperty($migration, 'to');
+
+            self::assertEquals(
+                $expectedToDataSource->getName(),
+                $toDataSource->getName(),
+            );
+
+            $expectedConnections = self::callPrivateProperty($migrationExpected, 'connections');
+            $connections = self::callPrivateProperty($migration, 'connections');
+
+            self::assertCount(
+                2,
+                $connections,
+            );
+
+            self::assertEqualsCanonicalizing(
+                $expectedConnections,
+                $connections,
             );
         }
     }

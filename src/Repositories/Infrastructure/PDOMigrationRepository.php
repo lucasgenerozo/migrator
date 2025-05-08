@@ -5,6 +5,7 @@ use DI\Container;
 use Lucas\Tcc\Models\Domain\Collection;
 use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
 use Lucas\Tcc\Models\Domain\Migration;
+use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
 use Lucas\Tcc\Repositories\Domain\MigrationRepository;
 use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
 use PDO;
@@ -15,10 +16,10 @@ class PDOMigrationRepository implements MigrationRepository
     
     public function __construct(
         private PDO $pdo,
-        private ?TreatmentRepository $treatmentRepository,
+        private TreatmentRepository $treatmentRepository,
     )
     {
-        $this->dataSource = new WritableDataSource(
+        $this->dataSource = new PDOWritableDataSource(
             'migrations',
             $pdo,
         );
@@ -53,11 +54,11 @@ class PDOMigrationRepository implements MigrationRepository
 
         foreach ($migrationDataList as $migrationData) {
 
-            $json = json_decode($migrationData['json'], flags: JSON_THROW_ON_ERROR);
+            $json = json_decode($migrationData['json'], associative: true, flags: JSON_THROW_ON_ERROR);
 
-            $migrationData['from'] = $collection->getOriginDatabase()->getDataSource($json->from->identifier, $json->from->with);
-            $migrationData['to'] = $collection->getDestinyDatabase()->getDataSource($json->to->identifier, $json->to->with);
-            $migrationData['connections'] = $json->connections;
+            $migrationData['from'] = $collection->getOriginDatabase()->getDataSource($json['from']['identifier'], $json['from']['with']);
+            $migrationData['to'] = $collection->getDestinyDatabase()->getDataSource($json['to']['identifier'], $json['to']['with']);
+            $migrationData['connections'] = $json['connections'];
 
             $migrationList[] = $this->hydrateMigration($migrationData);
         }

@@ -1,11 +1,14 @@
 <?php
+namespace Lucas\Tcc\Repositories\Infrastructure;
 
 use Lucas\Tcc\Exceptions\ResourceNotFound;
 use Lucas\Tcc\Models\Domain\Collection;
 use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
+use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
 use Lucas\Tcc\Repositories\Domain\CollectionRepository;
 use Lucas\Tcc\Repositories\Domain\DatabaseRepository;
 use Lucas\Tcc\Repositories\Domain\MigrationRepository;
+use PDO;
 
 class PDOCollectionRepository implements CollectionRepository
 {
@@ -16,7 +19,7 @@ class PDOCollectionRepository implements CollectionRepository
         private DatabaseRepository $databaseRepository,
         private MigrationRepository $migrationRepository,
     ) {
-        $this->dataSource = new WritableDataSource(
+        $this->dataSource = new PDOWritableDataSource(
             'collections',
             $pdo
         );
@@ -28,13 +31,13 @@ class PDOCollectionRepository implements CollectionRepository
             $data['id'],
             $data['origin'],
             $data['destiny'],
-            $data['migrations'],
+            $data['migrations'] ?? null,
         );
     }
 
     public function find(int $id): Collection
     {
-        $data = $this->dataSource->listBy([
+        $data = $this->dataSource->firstBy([
             ['id', '=', $id],
         ]);
 

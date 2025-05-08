@@ -4,6 +4,9 @@ Migration
  [x] Migration deve ter conexao definida corretamente with data set #0
  [x] Migration deve executar a migracao corretamente with data set #0
 
+PDOCollection Repository
+ [x] Collection repository deve encontrar collection corretamente with data set #0
+
 PDOData Source
  [x] List all with data set #0
  [x] List by callback with data set #0
@@ -26,7 +29,7 @@ PDODatabase Type Repository
  [x] Repository deve listar corretamente
 
 PDOMigration Repository
- [x] Repository deve listar migracoes de uma collection corretamente
+ [x] Repository deve listar migracoes de uma collection corretamente with data set #0
 
 PDOTreatment Repository
  [x] Repository deve listar corretamente with data set #0
