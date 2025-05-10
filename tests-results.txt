@@ -1,3 +1,6 @@
+Interpreter
+ [x] Interpreter deve carregar collection
+
 Migration
  [x] Migration nao deve permitir que destiny data source nao seja writable data source
  [x] Migration nao deve permitir inicializacao sem connections

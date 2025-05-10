@@ -1,7 +1,10 @@
 <?php
 
 use DI\Container;
+use Lucas\Tcc\Models\Domain\Collection;
+use Lucas\Tcc\Models\Domain\Database\DatabaseType;
 use Lucas\Tcc\Models\Domain\Interpreter;
+use Lucas\Tcc\Models\Infrastructure\PDO\PDODatabase;
 use PHPUnit\Framework\TestCase;
 
 class InterpreterTest extends TestCase
@@ -58,7 +61,7 @@ class InterpreterTest extends TestCase
         $pdo->query("
             INSERT INTO databases (id, type_id, name, config) VALUES
             (1, 1, 'Dump importado', '{\"dsn\": \"sqlite::memory:\",\"user\":\"\",\"password\":\"\"}'),
-            (2, 2, 'Origem', '{\"dsn\": \"sqlite::memory:\",\"user\":\"\",\"password\":\"\"}'); 
+            (2, 2, 'Origem', '{\"dsn\": \"sqlite::memory:\",\"user\":\"\",\"password\":\"\"}'),
             (3, 2, 'Destino', '{\"dsn\": \"sqlite::memory:\",\"user\":\"\",\"password\":\"\"}'); 
         ");
         $pdo->query("
@@ -91,7 +94,7 @@ class InterpreterTest extends TestCase
 
     public static function getContainer(): Container
     {
-        return require_once( __DIR__ . '/../config/dependencies.php');
+        return require_once( __DIR__ . '/../../../config/dependencies.php');
     }
 
     public function testInterpreterDeveCarregarCollection(): void
@@ -102,7 +105,48 @@ class InterpreterTest extends TestCase
             $container,
             1
         );
+        $collection = self::callPrivateProperty($interpreter, 'collection');
 
-        // comparar collections
+        $databaseType = new DatabaseType(
+            2,
+            'SQL',
+            true
+        );
+        $databaseConfig = [
+            'dsn' => 'sqlite::memory:',
+            'user' => '',
+            'password' => '',
+        ];
+        $collectionExpected = new Collection(
+            1,
+            new PDODatabase(
+                2,
+                $databaseType,
+                'Origem',
+                $databaseConfig,
+            ),
+            new PDODatabase(
+                3,
+                $databaseType,
+                'Destino',
+                $databaseConfig,
+            ),
+            null
+        );
+
+        self::assertEquals(
+            $collection->getId(),
+            $collectionExpected->getId(),
+        );
+
+        self::assertEquals(
+            $collection->getOriginDatabase()->getId(),
+            $collectionExpected->getOriginDatabase()->getId(),
+        );
+
+        self::assertEquals(
+            $collection->getDestinyDatabase()->getId(),
+            $collectionExpected->getDestinyDatabase()->getId(),
+        );
     }
 }
