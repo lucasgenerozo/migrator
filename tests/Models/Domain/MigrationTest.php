@@ -1,7 +1,8 @@
 <?php
 
 use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
-use Lucas\Tcc\Models\Domain\Migration;
+use Lucas\Tcc\Models\Domain\Migration\Migration;
+use Lucas\Tcc\Models\Domain\Migration\MigrationStatus;
 use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDODataSource;
 use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
 use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
@@ -100,6 +101,7 @@ class MigrationTest extends TestCase
                 'treatment' => 2,
             ],
         ];
+        $status = MigrationStatus::Created;
         
         $migration = new Migration(
             null,
@@ -107,6 +109,7 @@ class MigrationTest extends TestCase
             $destinyDataSource,
             $connections,
             $treatmentRepository,
+            $status
         );
 
         return [
@@ -151,6 +154,7 @@ class MigrationTest extends TestCase
             $originDataSource,
             [],
             $treatmentRepository,
+            MigrationStatus::Created,
         );
     }
 
@@ -168,6 +172,7 @@ class MigrationTest extends TestCase
             $destinyDataSource,
             [],
             $treatmentRepository,
+        MigrationStatus::Created,
         );
     }
 

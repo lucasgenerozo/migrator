@@ -2,6 +2,7 @@
 namespace Lucas\Tcc\Models\Domain;
 
 use Lucas\Tcc\Models\Domain\Database\Database;
+use Lucas\Tcc\Models\Domain\Migration\Migration;
 
 class Collection extends Entity
 {

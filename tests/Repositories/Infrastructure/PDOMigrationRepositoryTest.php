@@ -2,7 +2,8 @@
 
 use Lucas\Tcc\Models\Domain\Collection;
 use Lucas\Tcc\Models\Domain\Database\DatabaseType;
-use Lucas\Tcc\Models\Domain\Migration;
+use Lucas\Tcc\Models\Domain\Migration\Migration;
+use Lucas\Tcc\Models\Domain\Migration\MigrationStatus;
 use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDODataSource;
 use Lucas\Tcc\Models\Infrastructure\PDO\PDODatabase;
 use Lucas\Tcc\Repositories\Infrastructure\PDOMigrationRepository;
@@ -76,8 +77,8 @@ class PDOMigrationRepositoryTest extends TestCase
 
         $pdo->query("
             INSERT INTO migrations (id, collection_id, json, status) VALUES
-            (1, 1, '$json', 0),
-            (2, 1, '$json', 0);
+            (1, 1, '$json', 1),
+            (2, 1, '$json', 1);
         ");
 
         return $pdo;
@@ -157,6 +158,7 @@ class PDOMigrationRepositoryTest extends TestCase
                 'treatment' => null,
             ],
         ];
+        $migrationExpectedStatus = MigrationStatus::Created;
         $migrationExpectedList = [
             new Migration(
                 1,
@@ -164,6 +166,7 @@ class PDOMigrationRepositoryTest extends TestCase
                 $collection->getDestinyDatabase()->getDataSource('pessoas', []),
                 $migrationExpectedConnections,
                 $migrationExpectedTreatmentRepository,
+                $migrationExpectedStatus,
             ),
             new Migration(
                 2,
@@ -171,6 +174,7 @@ class PDOMigrationRepositoryTest extends TestCase
                 $collection->getDestinyDatabase()->getDataSource('pessoas', []),
                 $migrationExpectedConnections,
                 $migrationExpectedTreatmentRepository,
+                $migrationExpectedStatus,
             ),
         ];
     

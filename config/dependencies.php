@@ -79,8 +79,8 @@ $builder->addDefinitions([
 
         $pdo->query("
             INSERT INTO migrations (id, collection_id, json, status) VALUES
-            (1, 1, '$json', 0),
-            (2, 1, '$json', 0);
+            (1, 1, '$json', 1),
+            (2, 1, '$json', 1);
         ");
 
         return $pdo;

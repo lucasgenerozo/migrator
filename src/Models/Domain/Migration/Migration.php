@@ -1,9 +1,10 @@
 <?php
-namespace Lucas\Tcc\Models\Domain;
+namespace Lucas\Tcc\Models\Domain\Migration;
 
 use InvalidArgumentException;
 use Lucas\Tcc\Models\Domain\DataSource\DataSource;
 use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
+use Lucas\Tcc\Models\Domain\Entity;
 use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
 
 class Migration extends Entity
@@ -20,6 +21,7 @@ class Migration extends Entity
         private WritableDataSource $to,
         array $connections,
         private TreatmentRepository $treatmentRepository,
+        private MigrationStatus $status,
         private ?array $fromClauses = null,
     )
     {
@@ -114,13 +116,15 @@ class Migration extends Entity
 
     public function execute(): void
     {
-        $dataList = $this->getDataList();
+        $this->status = MigrationStatus::Executing;
 
-        foreach ($dataList as $data) {
+        foreach ($this->getDataList() as $data) {
             $insert_model = $this->dataToInsertModel($data);
 
             $this->to->add($insert_model);
         }
+
+        $this->status = MigrationStatus::Complete;
     }
 
     public function toArray(): array
@@ -130,6 +134,7 @@ class Migration extends Entity
             'from' => $this->from->getName(),
             'to' => $this->from->getName(),
             'connections' => $this->connections,
+            'status' => $this->status->value,
         ];
     }
 
@@ -141,6 +146,7 @@ class Migration extends Entity
             $data['to'],
             $data['connections'],
             $data['treatmentRepository'],
+            $data['status'],
             $data['fromClauses'],
         );
     }

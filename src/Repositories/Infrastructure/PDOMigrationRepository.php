@@ -1,10 +1,10 @@
 <?php
 namespace Lucas\Tcc\Repositories\Infrastructure;
 
-use DI\Container;
 use Lucas\Tcc\Models\Domain\Collection;
 use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
-use Lucas\Tcc\Models\Domain\Migration;
+use Lucas\Tcc\Models\Domain\Migration\Migration;
+use Lucas\Tcc\Models\Domain\Migration\MigrationStatus;
 use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
 use Lucas\Tcc\Repositories\Domain\MigrationRepository;
 use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
@@ -32,7 +32,8 @@ class PDOMigrationRepository implements MigrationRepository
             $data['from'],
             $data['to'],
             $data['connections'],
-            $this->treatmentRepository
+            $this->treatmentRepository,
+            $data['status'],
         );
     }
 
@@ -59,6 +60,7 @@ class PDOMigrationRepository implements MigrationRepository
             $migrationData['from'] = $collection->getOriginDatabase()->getDataSource($json['from']['identifier'], $json['from']['with']);
             $migrationData['to'] = $collection->getDestinyDatabase()->getDataSource($json['to']['identifier'], $json['to']['with']);
             $migrationData['connections'] = $json['connections'];
+            $migrationData['status'] = MigrationStatus::from($migrationData['status']);
 
             $migrationList[] = $this->hydrateMigration($migrationData);
         }
