@@ -1,5 +1,6 @@
 {
     "name": "lucasgenerozo/migrator",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "LucasGenerozo\\Migrator\\": "src/"
