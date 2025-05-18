@@ -1,13 +1,13 @@
 <?php
 
-use Lucas\Tcc\Models\Domain\Collection;
-use Lucas\Tcc\Models\Domain\Database\DatabaseType;
-use Lucas\Tcc\Models\Infrastructure\PDO\PDODatabase;
-use Lucas\Tcc\Repositories\Infrastructure\PDOCollectionRepository;
-use Lucas\Tcc\Repositories\Infrastructure\PDODatabaseRepository;
-use Lucas\Tcc\Repositories\Infrastructure\PDODatabaseTypeRepository;
-use Lucas\Tcc\Repositories\Infrastructure\PDOMigrationRepository;
-use Lucas\Tcc\Repositories\Infrastructure\PDOTreatmentRepository;
+use LucasGenerozo\Migrator\Models\Domain\Collection;
+use LucasGenerozo\Migrator\Models\Domain\Database\DatabaseType;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\PDODatabase;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDOCollectionRepository;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDODatabaseRepository;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDODatabaseTypeRepository;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDOMigrationRepository;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDOTreatmentRepository;
 use PHPUnit\Framework\TestCase;
 
 class PDOCollectionRepositoryTest extends TestCase

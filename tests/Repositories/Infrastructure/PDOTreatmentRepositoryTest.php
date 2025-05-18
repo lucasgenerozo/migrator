@@ -1,7 +1,7 @@
 <?php
 
-use Lucas\Tcc\Models\Domain\Treatment;
-use Lucas\Tcc\Repositories\Infrastructure\PDOTreatmentRepository;
+use LucasGenerozo\Migrator\Models\Domain\Treatment;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDOTreatmentRepository;
 use PHPUnit\Framework\TestCase;
 
 class PDOTreatmentRepositoryTest extends TestCase

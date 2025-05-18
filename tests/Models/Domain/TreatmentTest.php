@@ -1,6 +1,6 @@
 <?php
 
-use Lucas\Tcc\Models\Domain\Treatment;
+use LucasGenerozo\Migrator\Models\Domain\Treatment;
 use PHPUnit\Framework\TestCase;
 
 class TreatmentTest extends TestCase

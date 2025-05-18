@@ -1,7 +1,7 @@
 <?php
-namespace Lucas\Tcc\Models\Domain\Database;
+namespace LucasGenerozo\Migrator\Models\Domain\Database;
 
-use Lucas\Tcc\Models\Domain\Entity;
+use LucasGenerozo\Migrator\Models\Domain\Entity;
 
 class DatabaseType extends Entity
 {

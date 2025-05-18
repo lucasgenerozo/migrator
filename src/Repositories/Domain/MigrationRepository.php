@@ -1,7 +1,7 @@
 <?php
-namespace Lucas\Tcc\Repositories\Domain;
+namespace LucasGenerozo\Migrator\Repositories\Domain;
 
-use Lucas\Tcc\Models\Domain\Collection;
+use LucasGenerozo\Migrator\Models\Domain\Collection;
 
 interface MigrationRepository
 {

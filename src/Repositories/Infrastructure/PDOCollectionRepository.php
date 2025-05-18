@@ -1,13 +1,13 @@
 <?php
-namespace Lucas\Tcc\Repositories\Infrastructure;
+namespace LucasGenerozo\Migrator\Repositories\Infrastructure;
 
-use Lucas\Tcc\Exceptions\ResourceNotFound;
-use Lucas\Tcc\Models\Domain\Collection;
-use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
-use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
-use Lucas\Tcc\Repositories\Domain\CollectionRepository;
-use Lucas\Tcc\Repositories\Domain\DatabaseRepository;
-use Lucas\Tcc\Repositories\Domain\MigrationRepository;
+use LucasGenerozo\Migrator\Exceptions\ResourceNotFound;
+use LucasGenerozo\Migrator\Models\Domain\Collection;
+use LucasGenerozo\Migrator\Models\Domain\DataSource\WritableDataSource;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
+use LucasGenerozo\Migrator\Repositories\Domain\CollectionRepository;
+use LucasGenerozo\Migrator\Repositories\Domain\DatabaseRepository;
+use LucasGenerozo\Migrator\Repositories\Domain\MigrationRepository;
 use PDO;
 
 class PDOCollectionRepository implements CollectionRepository

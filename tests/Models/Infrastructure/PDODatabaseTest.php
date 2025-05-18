@@ -1,10 +1,10 @@
 <?php
 
-use Lucas\Tcc\Models\Domain\Database\DatabaseType;
-use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
-use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDODataSource;
-use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
-use Lucas\Tcc\Models\Infrastructure\PDO\PDODatabase;
+use LucasGenerozo\Migrator\Models\Domain\Database\DatabaseType;
+use LucasGenerozo\Migrator\Models\Domain\DataSource\WritableDataSource;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource\PDODataSource;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\PDODatabase;
 use PHPUnit\Framework\TestCase;
 
 class PDODatabaseTest extends TestCase

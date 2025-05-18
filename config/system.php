@@ -1,6 +1,6 @@
 <?php
 
-use Lucas\Tcc\Repositories\Domain\CollectionRepository;
+use LucasGenerozo\Migrator\Repositories\Domain\CollectionRepository;
 
 return [
 

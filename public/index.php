@@ -1,6 +1,6 @@
 <?php
 
-use Lucas\Tcc\Models\Domain\Interpreter;
+use LucasGenerozo\Migrator\Models\Domain\Interpreter;
 
 $container = require_once( __DIR__ . '/../config/dependencies.php');
 

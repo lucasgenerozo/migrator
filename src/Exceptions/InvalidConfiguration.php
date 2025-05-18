@@ -1,5 +1,5 @@
 <?php
-namespace Lucas\Tcc\Exceptions;
+namespace LucasGenerozo\Migrator\Exceptions;
 
 use Exception;
 

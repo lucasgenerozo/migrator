@@ -1,16 +1,15 @@
 <?php
 
-use Lucas\Tcc\Repositories\Domain\CollectionRepository;
-use Lucas\Tcc\Repositories\Domain\DatabaseRepository;
-use Lucas\Tcc\Repositories\Domain\DatabaseTypeRepository;
-use Lucas\Tcc\Repositories\Domain\MigrationRepository;
-use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
-use Lucas\Tcc\Repositories\Infrastructure\PDOCollectionRepository;
-use Lucas\Tcc\Repositories\Infrastructure\PDODatabaseRepository;
-use Lucas\Tcc\Repositories\Infrastructure\PDODatabaseTypeRepository;
-use Lucas\Tcc\Repositories\Infrastructure\PDOMigrationRepository;
-use Lucas\Tcc\Repositories\Infrastructure\PDOTreatmentRepository;
-use Psr\Container\ContainerInterface;
+use LucasGenerozo\Migrator\Repositories\Domain\CollectionRepository;
+use LucasGenerozo\Migrator\Repositories\Domain\DatabaseRepository;
+use LucasGenerozo\Migrator\Repositories\Domain\DatabaseTypeRepository;
+use LucasGenerozo\Migrator\Repositories\Domain\MigrationRepository;
+use LucasGenerozo\Migrator\Repositories\Domain\TreatmentRepository;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDOCollectionRepository;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDODatabaseRepository;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDODatabaseTypeRepository;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDOMigrationRepository;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDOTreatmentRepository;
 
 $builder = new \DI\ContainerBuilder();
 

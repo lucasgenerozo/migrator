@@ -1,7 +1,7 @@
 <?php
 
-use Lucas\Tcc\Models\Domain\Database\DatabaseType;
-use Lucas\Tcc\Repositories\Infrastructure\PDODatabaseTypeRepository;
+use LucasGenerozo\Migrator\Models\Domain\Database\DatabaseType;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDODatabaseTypeRepository;
 use PHPUnit\Framework\TestCase;
 
 class PDODatabaseTypeRepositoryTest extends TestCase

@@ -1,10 +1,10 @@
 <?php
-namespace Lucas\Tcc\Models\Infrastructure\PDO\DataSource;
+namespace LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource;
 
 use Exception;
-use Lucas\Tcc\Exceptions\InvalidConfiguration;
-use Lucas\Tcc\Models\Domain\DataSource\DataSource;
-use Lucas\Tcc\Utils\SQLOperator;
+use LucasGenerozo\Migrator\Exceptions\InvalidConfiguration;
+use LucasGenerozo\Migrator\Models\Domain\DataSource\DataSource;
+use LucasGenerozo\Migrator\Utils\SQLOperator;
 use PDO;
 use TypeError;
 

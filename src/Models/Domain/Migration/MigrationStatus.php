@@ -1,5 +1,5 @@
 <?php
-namespace Lucas\Tcc\Models\Domain\Migration;
+namespace LucasGenerozo\Migrator\Models\Domain\Migration;
 
 enum MigrationStatus :  int
 {

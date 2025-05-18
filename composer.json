@@ -1,8 +1,8 @@
 {
-    "name": "lucas/tcc",
+    "name": "lucasgenerozo/migrator",
     "autoload": {
         "psr-4": {
-            "Lucas\\Tcc\\": "src/"
+            "LucasGenerozo\\Migrator\\": "src/"
         }
     },
     "authors": [

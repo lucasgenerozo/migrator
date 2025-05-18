@@ -1,9 +1,9 @@
 <?php
-namespace Lucas\Tcc\Models\Domain;
+namespace LucasGenerozo\Migrator\Models\Domain;
 
 use DI\Container;
 use Exception;
-use Lucas\Tcc\Repositories\Domain\CollectionRepository;
+use LucasGenerozo\Migrator\Repositories\Domain\CollectionRepository;
 
 class Interpreter
 {

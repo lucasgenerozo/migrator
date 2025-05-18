@@ -1,6 +1,6 @@
 <?php
 
-use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
 use PHPUnit\Framework\TestCase;
 
 class PDOWritableDataSourceTest extends TestCase

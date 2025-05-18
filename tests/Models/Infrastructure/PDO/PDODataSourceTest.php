@@ -1,7 +1,7 @@
 <?php
 
-use Lucas\Tcc\Exceptions\InvalidConfiguration;
-use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDODataSource;
+use LucasGenerozo\Migrator\Exceptions\InvalidConfiguration;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource\PDODataSource;
 use PHPUnit\Framework\TestCase;
 
 class PDODataSourceTest extends TestCase

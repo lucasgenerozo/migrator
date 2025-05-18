@@ -1,12 +1,12 @@
 <?php
 
-use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
-use Lucas\Tcc\Models\Domain\Migration\Migration;
-use Lucas\Tcc\Models\Domain\Migration\MigrationStatus;
-use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDODataSource;
-use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
-use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
-use Lucas\Tcc\Repositories\Infrastructure\PDOTreatmentRepository;
+use LucasGenerozo\Migrator\Models\Domain\DataSource\WritableDataSource;
+use LucasGenerozo\Migrator\Models\Domain\Migration\Migration;
+use LucasGenerozo\Migrator\Models\Domain\Migration\MigrationStatus;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource\PDODataSource;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
+use LucasGenerozo\Migrator\Repositories\Domain\TreatmentRepository;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDOTreatmentRepository;
 use PHPUnit\Framework\TestCase;
 
 class MigrationTest extends TestCase

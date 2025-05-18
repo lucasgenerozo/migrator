@@ -1,7 +1,7 @@
 <?php
-namespace Lucas\Tcc\Repositories\Domain;
+namespace LucasGenerozo\Migrator\Repositories\Domain;
 
-use Lucas\Tcc\Models\Domain\Treatment;
+use LucasGenerozo\Migrator\Models\Domain\Treatment;
 
 interface TreatmentRepository
 {

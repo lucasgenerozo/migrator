@@ -1,5 +1,5 @@
 <?php
-namespace Lucas\Tcc\Models\Domain;
+namespace LucasGenerozo\Migrator\Models\Domain;
 
 use Exception;
 use InvalidArgumentException;

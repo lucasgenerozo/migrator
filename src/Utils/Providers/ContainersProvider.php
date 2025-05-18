@@ -1,5 +1,5 @@
 <?php
-namespace Lucas\Tcc\Utils\Providers;
+namespace LucasGenerozo\Migrator\Utils\Providers;
 
 use DI\Container;
 

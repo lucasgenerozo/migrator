@@ -1,6 +1,5 @@
 <?php
-namespace Lucas\Tcc\Models\Domain;
-
+namespace LucasGenerozo\Migrator\Models\Domain;
 
 abstract class Entity implements ArraySerializable
 {

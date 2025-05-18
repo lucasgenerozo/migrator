@@ -1,6 +1,6 @@
 <?php
 
-use Lucas\Tcc\Utils\SQLOperator;
+use LucasGenerozo\Migrator\Utils\SQLOperator;
 use PHPUnit\Framework\TestCase;
 
 class SQLOperatorTest extends TestCase

@@ -1,8 +1,8 @@
 <?php
-namespace Lucas\Tcc\Models\Domain\Database;
+namespace LucasGenerozo\Migrator\Models\Domain\Database;
 
-use Lucas\Tcc\Models\Domain\Database\DatabaseType;
-use Lucas\Tcc\Models\Domain\DataSource\DataSource;
+use LucasGenerozo\Migrator\Models\Domain\Database\DatabaseType;
+use LucasGenerozo\Migrator\Models\Domain\DataSource\DataSource;
 
 interface Database
 {

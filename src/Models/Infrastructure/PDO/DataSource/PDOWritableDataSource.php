@@ -1,8 +1,8 @@
 <?php
-namespace Lucas\Tcc\Models\Infrastructure\PDO\DataSource;
+namespace LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource;
 
-use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
-use Lucas\Tcc\Utils\SQLOperator;
+use LucasGenerozo\Migrator\Models\Domain\DataSource\WritableDataSource;
+use LucasGenerozo\Migrator\Utils\SQLOperator;
 
 class PDOWritableDataSource extends PDODataSource implements WritableDataSource
 {

@@ -1,10 +1,10 @@
 <?php
 
 use DI\Container;
-use Lucas\Tcc\Models\Domain\Collection;
-use Lucas\Tcc\Models\Domain\Database\DatabaseType;
-use Lucas\Tcc\Models\Domain\Interpreter;
-use Lucas\Tcc\Models\Infrastructure\PDO\PDODatabase;
+use LucasGenerozo\Migrator\Models\Domain\Collection;
+use LucasGenerozo\Migrator\Models\Domain\Database\DatabaseType;
+use LucasGenerozo\Migrator\Models\Domain\Interpreter;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\PDODatabase;
 use PHPUnit\Framework\TestCase;
 
 class InterpreterTest extends TestCase

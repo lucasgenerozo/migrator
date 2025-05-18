@@ -1,11 +1,11 @@
 <?php
-namespace Lucas\Tcc\Models\Domain\Migration;
+namespace LucasGenerozo\Migrator\Models\Domain\Migration;
 
 use InvalidArgumentException;
-use Lucas\Tcc\Models\Domain\DataSource\DataSource;
-use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
-use Lucas\Tcc\Models\Domain\Entity;
-use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
+use LucasGenerozo\Migrator\Models\Domain\DataSource\DataSource;
+use LucasGenerozo\Migrator\Models\Domain\DataSource\WritableDataSource;
+use LucasGenerozo\Migrator\Models\Domain\Entity;
+use LucasGenerozo\Migrator\Repositories\Domain\TreatmentRepository;
 
 class Migration extends Entity
 {

@@ -1,10 +1,10 @@
 <?php
-namespace Lucas\Tcc\Repositories\Infrastructure;
+namespace LucasGenerozo\Migrator\Repositories\Infrastructure;
 
-use Lucas\Tcc\Exceptions\ResourceNotFound;
-use Lucas\Tcc\Models\Domain\Treatment;
-use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
-use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
+use LucasGenerozo\Migrator\Exceptions\ResourceNotFound;
+use LucasGenerozo\Migrator\Models\Domain\Treatment;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
+use LucasGenerozo\Migrator\Repositories\Domain\TreatmentRepository;
 use PDO;
 
 class PDOTreatmentRepository implements TreatmentRepository

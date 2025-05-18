@@ -1,8 +1,8 @@
 <?php
-namespace Lucas\Tcc\Models\Domain;
+namespace LucasGenerozo\Migrator\Models\Domain;
 
-use Lucas\Tcc\Models\Domain\Database\Database;
-use Lucas\Tcc\Models\Domain\Migration\Migration;
+use LucasGenerozo\Migrator\Models\Domain\Database\Database;
+use LucasGenerozo\Migrator\Models\Domain\Migration\Migration;
 
 class Collection extends Entity
 {

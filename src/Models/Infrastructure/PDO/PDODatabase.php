@@ -1,13 +1,13 @@
 <?php
-namespace Lucas\Tcc\Models\Infrastructure\PDO;
+namespace LucasGenerozo\Migrator\Models\Infrastructure\PDO;
 
 use InvalidArgumentException;
-use Lucas\Tcc\Models\Domain\Database\Database;
-use Lucas\Tcc\Models\Domain\Database\DatabaseType;
-use Lucas\Tcc\Models\Domain\DataSource\DataSource;
-use Lucas\Tcc\Models\Domain\Entity;
-use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDODataSource;
-use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
+use LucasGenerozo\Migrator\Models\Domain\Database\Database;
+use LucasGenerozo\Migrator\Models\Domain\Database\DatabaseType;
+use LucasGenerozo\Migrator\Models\Domain\DataSource\DataSource;
+use LucasGenerozo\Migrator\Models\Domain\Entity;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource\PDODataSource;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
 use PDO;
 
 class PDODatabase extends Entity implements Database

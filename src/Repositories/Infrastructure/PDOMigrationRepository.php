@@ -1,13 +1,13 @@
 <?php
-namespace Lucas\Tcc\Repositories\Infrastructure;
+namespace LucasGenerozo\Migrator\Repositories\Infrastructure;
 
-use Lucas\Tcc\Models\Domain\Collection;
-use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
-use Lucas\Tcc\Models\Domain\Migration\Migration;
-use Lucas\Tcc\Models\Domain\Migration\MigrationStatus;
-use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
-use Lucas\Tcc\Repositories\Domain\MigrationRepository;
-use Lucas\Tcc\Repositories\Domain\TreatmentRepository;
+use LucasGenerozo\Migrator\Models\Domain\Collection;
+use LucasGenerozo\Migrator\Models\Domain\DataSource\WritableDataSource;
+use LucasGenerozo\Migrator\Models\Domain\Migration\Migration;
+use LucasGenerozo\Migrator\Models\Domain\Migration\MigrationStatus;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
+use LucasGenerozo\Migrator\Repositories\Domain\MigrationRepository;
+use LucasGenerozo\Migrator\Repositories\Domain\TreatmentRepository;
 use PDO;
 
 class PDOMigrationRepository implements MigrationRepository

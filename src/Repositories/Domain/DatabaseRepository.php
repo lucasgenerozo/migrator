@@ -1,7 +1,7 @@
 <?php
-namespace Lucas\Tcc\Repositories\Domain;
+namespace LucasGenerozo\Migrator\Repositories\Domain;
 
-use Lucas\Tcc\Models\Domain\Database\Database;
+use LucasGenerozo\Migrator\Models\Domain\Database\Database;
 
 interface DatabaseRepository
 {

@@ -1,10 +1,10 @@
 <?php
 
-use Lucas\Tcc\Exceptions\ResourceNotFound;
-use Lucas\Tcc\Models\Domain\Database\DatabaseType;
-use Lucas\Tcc\Models\Infrastructure\PDO\PDODatabase;
-use Lucas\Tcc\Repositories\Infrastructure\PDODatabaseRepository;
-use Lucas\Tcc\Repositories\Infrastructure\PDODatabaseTypeRepository;
+use LucasGenerozo\Migrator\Exceptions\ResourceNotFound;
+use LucasGenerozo\Migrator\Models\Domain\Database\DatabaseType;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\PDODatabase;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDODatabaseRepository;
+use LucasGenerozo\Migrator\Repositories\Infrastructure\PDODatabaseTypeRepository;
 use PHPUnit\Framework\TestCase;
 
 class PDODatabaseRepositoryTest extends TestCase

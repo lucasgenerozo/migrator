@@ -1,5 +1,5 @@
 <?php
-namespace Lucas\Tcc\Models\Domain\DataSource;
+namespace LucasGenerozo\Migrator\Models\Domain\DataSource;
 
 interface WritableDataSource extends DataSource
 {

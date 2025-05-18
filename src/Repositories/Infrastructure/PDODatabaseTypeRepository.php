@@ -1,11 +1,11 @@
 <?php
-namespace Lucas\Tcc\Repositories\Infrastructure;
+namespace LucasGenerozo\Migrator\Repositories\Infrastructure;
 
-use Lucas\Tcc\Exceptions\ResourceNotFound;
-use Lucas\Tcc\Models\Domain\Database\DatabaseType;
-use Lucas\Tcc\Models\Domain\DataSource\WritableDataSource;
-use Lucas\Tcc\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
-use Lucas\Tcc\Repositories\Domain\DatabaseTypeRepository;
+use LucasGenerozo\Migrator\Exceptions\ResourceNotFound;
+use LucasGenerozo\Migrator\Models\Domain\Database\DatabaseType;
+use LucasGenerozo\Migrator\Models\Domain\DataSource\WritableDataSource;
+use LucasGenerozo\Migrator\Models\Infrastructure\PDO\DataSource\PDOWritableDataSource;
+use LucasGenerozo\Migrator\Repositories\Domain\DatabaseTypeRepository;
 use PDO;
 
 class PDODatabaseTypeRepository implements DatabaseTypeRepository
