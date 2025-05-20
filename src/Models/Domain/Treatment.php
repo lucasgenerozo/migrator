@@ -20,6 +20,11 @@ class Treatment extends Entity
         $this->setFunction($function_str);
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function setParameters(string $parameters_str): void
     {
         if (empty($parameters_str)) {

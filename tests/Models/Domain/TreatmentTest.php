@@ -60,4 +60,19 @@ class TreatmentTest extends TestCase
             'return input * multiplier'
         );
     }
+
+    public function testTreatmentDeveRetornarONomeDefinidoCorretamente(): void
+    {
+        $treatment = new Treatment(
+            null,
+            'multiplier',
+            '$input, $multiplier',
+            'return $input * $multiplier;'
+        );
+
+        self::assertEquals(
+            'multiplier',
+            $treatment->getName(),
+        );
+    }
 }
