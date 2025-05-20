@@ -7,6 +7,6 @@ interface DatabaseRepository
 {
     public function list(): ?array;
     public function find(int $id): Database;
-    public function save(Database &$collection): void;
+    public function save(Database &$database): void;
     public function remove(int $id): void;
 }
