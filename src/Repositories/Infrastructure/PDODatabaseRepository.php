@@ -24,8 +24,15 @@ class PDODatabaseRepository implements DatabaseRepository
         );
     }
 
-    public static function hydrateDatabase(array $data): Database
+    public function hydrateDatabase(array $data): Database
     {
+        $data['type'] = $this->databaseTypeRepository->find($data['type_id']);
+        $data['config'] = json_decode(
+            $data['config'], 
+            associative: true, 
+            flags: JSON_THROW_ON_ERROR
+        );
+
         return new PDODatabase(
             $data['id'],
             $data['type'],
@@ -47,9 +54,52 @@ class PDODatabaseRepository implements DatabaseRepository
             );
         }
 
-        $databaseData['type'] = $this->databaseTypeRepository->find($databaseData['type_id']);
-        $databaseData['config'] = json_decode($databaseData['config'], associative: true, flags: JSON_THROW_ON_ERROR);
 
-        return self::hydrateDatabase($databaseData);
+        return $this->hydrateDatabase($databaseData);
+    }
+
+    public function list(): ?array
+    {
+        $databaseDataList = $this->dataSource->listAll();
+        $databaseList = [];
+
+        foreach ($databaseDataList as $databaseData) {
+            $databaseList[] = $this->hydrateDatabase($databaseData);
+        }
+
+        return $databaseList;
+    }
+
+    private function insert(Database &$database): void
+    {
+        $database->setId(
+            $this->dataSource->add(
+                $database->toArray()
+            )
+        );
+    }
+
+    private function update(Database $database): void
+    {
+        $this->dataSource->edit(
+            [
+                ['id', '=', $database->getId()]
+            ],
+            $database->toArray()
+        );
+    }
+
+    public function save(Database &$database): void
+    {
+        $function_name = is_null($database->getId()) ? 'insert' : 'update';
+
+        $this->$function_name($database);
+    }
+
+    public function remove(int $id): void
+    {
+        $this->dataSource->remove([
+            ['id', '=', $id]
+        ]);
     }
 }

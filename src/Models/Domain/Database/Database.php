@@ -13,7 +13,8 @@ interface Database
         array $options,
     );
 
+    public function setId(?int $id): void;
     public function getId(): ?int;
-
     public function getDataSource(string $name, ?array $with = []): ?DataSource;
+    public function toArray(): array;
 }
