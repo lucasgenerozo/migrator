@@ -1,6 +1,7 @@
 <?php
 namespace LucasGenerozo\Migrator\Repositories\Infrastructure;
 
+use LucasGenerozo\Migrator\Exceptions\ResourceNotFound;
 use LucasGenerozo\Migrator\Models\Domain\Collection;
 use LucasGenerozo\Migrator\Models\Domain\DataSource\WritableDataSource;
 use LucasGenerozo\Migrator\Models\Domain\Migration\Migration;
@@ -25,8 +26,15 @@ class PDOMigrationRepository implements MigrationRepository
         );
     }
     
-    public function hydrateMigration(array $data): Migration
+    public function hydrateMigration(array $data, Collection $collection): Migration
     {
+        $json = json_decode($data['json'], associative: true, flags: JSON_THROW_ON_ERROR);
+
+        $data['from'] = $collection->getOriginDatabase()->getDataSource($json['from']['identifier'], $json['from']['with']);
+        $data['to'] = $collection->getDestinyDatabase()->getDataSource($json['to']['identifier'], $json['to']['with']);
+        $data['connections'] = $json['connections'];
+        $data['status'] = MigrationStatus::from($data['status']);
+
         return new Migration(
             $data['id'],
             $data['from'],
@@ -54,17 +62,39 @@ class PDOMigrationRepository implements MigrationRepository
         $migrationList = [];
 
         foreach ($migrationDataList as $migrationData) {
-
-            $json = json_decode($migrationData['json'], associative: true, flags: JSON_THROW_ON_ERROR);
-
-            $migrationData['from'] = $collection->getOriginDatabase()->getDataSource($json['from']['identifier'], $json['from']['with']);
-            $migrationData['to'] = $collection->getDestinyDatabase()->getDataSource($json['to']['identifier'], $json['to']['with']);
-            $migrationData['connections'] = $json['connections'];
-            $migrationData['status'] = MigrationStatus::from($migrationData['status']);
-
-            $migrationList[] = $this->hydrateMigration($migrationData);
+            $migrationList[] = $this->hydrateMigration($migrationData, $collection);
         }
         
         return $migrationList;
+    }
+
+    private function insert(array &$migrationData): void
+    {
+        $migrationData['id'] = $this->dataSource->add($migrationData);
+    }
+
+    private function update(array $migrationData): void
+    {
+        $this->dataSource->edit(
+            [
+                ['id', '=', $migrationData['id']]
+            ],
+            $migrationData,
+        );
+    }
+
+    public function save(array $migrationData): void
+    {
+        $function_name = is_null($migrationData['id']) ? 'insert' : 'update';
+
+        $this->$function_name($migrationData);
+
+    }
+
+    public function remove(int $id): void
+    {
+        $this->dataSource->remove([
+            ['id', '=', $id],
+        ]);
     }
 }
