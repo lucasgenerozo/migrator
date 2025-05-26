@@ -27,6 +27,9 @@ PDODatabase
 PDODatabase Repository
  [x] Repositorio deve encontrar registro corretamente with data set #0
  [x] Repositorio deve lancar excecao caso nao encontre registro with data set #0
+ [x] Repositorio deve inserir registro corretamente with data set #0
+ [x] Repositorio deve alterar registro corretamente with data set #0
+ [x] Repositorio deve remover registro corretamente with data set #0
 
 PDODatabase Type Repository
  [x] Repository deve listar corretamente

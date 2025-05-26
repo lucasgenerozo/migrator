@@ -13,7 +13,7 @@ CREATE TABLE database_types (
 
 CREATE TABLE databases (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    type_id INTEGER,
+    type INTEGER,
     name TEXT,
     config TEXT
 );

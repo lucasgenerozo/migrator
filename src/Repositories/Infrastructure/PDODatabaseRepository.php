@@ -26,7 +26,7 @@ class PDODatabaseRepository implements DatabaseRepository
 
     public function hydrateDatabase(array $data): Database
     {
-        $data['type'] = $this->databaseTypeRepository->find($data['type_id']);
+        $data['type_id'] = $this->databaseTypeRepository->find($data['type_id']);
         $data['config'] = json_decode(
             $data['config'], 
             associative: true, 
@@ -35,7 +35,7 @@ class PDODatabaseRepository implements DatabaseRepository
 
         return new PDODatabase(
             $data['id'],
-            $data['type'],
+            $data['type_id'],
             $data['name'],
             $data['config']
         );

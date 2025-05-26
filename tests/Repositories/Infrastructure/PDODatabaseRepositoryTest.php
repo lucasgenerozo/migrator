@@ -110,7 +110,109 @@ class PDODatabaseRepositoryTest extends TestCase
     public function testRepositorioDeveLancarExcecaoCasoNaoEncontreRegistro(PDODatabaseRepository $repository): void
     {
         $this->expectException(ResourceNotFound::class);
-
+        
         $repository->find(3);
+    }
+    
+    /** @dataProvider providerDatabaseRepository */
+    public function testRepositorioDeveInserirRegistroCorretamente(PDODatabaseRepository $repository): void
+    {
+        $newDatabase = new PDODatabase(
+            null,
+            new DatabaseType(
+                2,
+                'SQL',
+                1,
+            ),
+            'Master',
+            [
+                'dsn' => 'sqlite::memory:',
+                'user' => '',
+                'password' => '',
+            ],
+        );
+
+        $repository->save($newDatabase);
+
+        self::assertEquals(
+            3,
+            $newDatabase->getId()
+        );
+
+        self::assertCount(
+            3,
+            $repository->list()
+        );
+
+        $database = $repository->find(3);
+
+        self::assertEquals(
+            $newDatabase->getId(),
+            $database->getId(),
+        );
+
+        self::assertEquals(
+            self::callPrivateProperty($newDatabase, 'name'),
+            self::callPrivateProperty($database, 'name'),
+        );
+    }
+
+    /** @dataProvider providerDatabaseRepository */
+    public function testRepositorioDeveAlterarRegistroCorretamente(PDODatabaseRepository $repository): void
+    {
+        $newDatabase = new PDODatabase(
+            2,
+            new DatabaseType(
+                1,
+                'JSON',
+                0,
+            ),
+            'Client',
+            [
+                'dsn' => 'sqlite::memory:',
+                'user' => '',
+                'password' => '',
+            ],
+        );
+
+        $repository->save($newDatabase);
+
+        self::assertEquals(
+            2,
+            $newDatabase->getId()
+        );
+
+        self::assertCount(
+            2,
+            $repository->list()
+        );
+
+        $database = $repository->find(2);
+
+        self::assertEquals(
+            $newDatabase->getId(),
+            $database->getId(),
+        );
+
+        self::assertEquals(
+            self::callPrivateProperty($newDatabase, 'name'),
+            self::callPrivateProperty($database, 'name'),
+        );
+
+        self::assertEquals(
+            'Client',
+            self::callPrivateProperty($database, 'name'),
+        );
+    }
+
+    /** @dataProvider providerDatabaseRepository */
+    public function testRepositorioDeveRemoverRegistroCorretamente(PDODatabaseRepository $repository): void
+    {
+        $repository->remove(2);
+
+        self::assertCount(
+            1,
+            $repository->list(),
+        );
     }
 }

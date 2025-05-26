@@ -70,9 +70,12 @@ class PDODatabase extends Entity implements Database
     {
         return [
             'id' => $this->id,
-            'type' => $this->type->toArray(),
+            'type_id' => $this->type->getId(),
             'name' => $this->name,
-            'config' => $this->config,
+            'config' => json_encode(
+                $this->config, 
+                flags: JSON_THROW_ON_ERROR
+            ),
         ];
     }
 
@@ -80,7 +83,7 @@ class PDODatabase extends Entity implements Database
     {
         return new PDODatabase(
             $data['id'],
-            $data['type'],
+            $data['type_id'],
             $data['name'],
             $data['config'],
         );
