@@ -221,4 +221,169 @@ class PDOMigrationRepositoryTest extends TestCase
         }
     }
 
+    /** @dataProvider providerMigrationRepository */
+    public function testRepositoryDeveInserirMigracaoCorretamente(PDOMigrationRepository $repository): void
+    {
+        $migrationData = [
+            'id' => null,
+            'collection_id' => 1,
+            'json' => '{"from": {"identifier": "pessoa","clauses": [{"field": "IdInstituicao","operator": "=","value": "51"},{"field": "Excluido","operator": "=","value": "N"}],"with": null},"to": {"identifier": "pessoas","clauses": null,"with": null},"connections": [{"from": "IdPessoa","to": "id_origem","treatment": 123},{"from": "NomeRazaoSocial","to": "nome","treatment": null}]}',
+            'status' => '1',            
+        ];
+
+        $repository->save($migrationData);
+
+        self::assertEquals(
+            3,
+            $migrationData['id'],
+        );
+
+        $databaseType = new DatabaseType(
+            2,
+            'SQL',
+            true
+        );
+        $databaseConfig = [
+            'dsn' => 'sqlite::memory:',
+            'user' => '',
+            'password' => '',
+        ];
+
+        $collection  = new Collection(
+            1,
+            new PDODatabase(
+                2,
+                $databaseType,
+                'Origem',
+                $databaseConfig,
+            ),
+            new PDODatabase(
+                3,
+                $databaseType,
+                'Destino',
+                $databaseConfig,
+            ),
+            null
+        );
+
+        $migrationList = $repository->listByCollection($collection);
+
+        self::assertCount(
+            3,
+            $migrationList
+        );
+
+        $migration = $migrationList[2];
+
+        self::assertEquals(
+            3,
+            $migration->getId(),
+        );
+
+        self::assertEquals(
+            1,
+            (self::callPrivateProperty($migration, 'status'))->value,
+        );
+    }
+
+    /** @dataProvider providerMigrationRepository */
+    public function testRepositoryDeveAlterarMigracaoCorretamente(PDOMigrationRepository $repository): void
+    {
+        $migrationData = [
+            'id' => 1,
+            'status' => '2',            
+        ];
+
+        $repository->save($migrationData);
+
+        self::assertEquals(
+            1,
+            $migrationData['id'],
+        );
+
+        $databaseType = new DatabaseType(
+            2,
+            'SQL',
+            true
+        );
+        $databaseConfig = [
+            'dsn' => 'sqlite::memory:',
+            'user' => '',
+            'password' => '',
+        ];
+
+        $collection  = new Collection(
+            1,
+            new PDODatabase(
+                2,
+                $databaseType,
+                'Origem',
+                $databaseConfig,
+            ),
+            new PDODatabase(
+                3,
+                $databaseType,
+                'Destino',
+                $databaseConfig,
+            ),
+            null
+        );
+
+        $migrationList = $repository->listByCollection($collection);
+
+        self::assertCount(
+            2,
+            $migrationList
+        );
+
+        $migration = $migrationList[0];
+
+        self::assertEquals(
+            2,
+            (self::callPrivateProperty($migration, 'status'))->value,
+        );
+    }
+
+        /** @dataProvider providerMigrationRepository */
+    public function testeRepositoryDeveRemoverMigracaoCorretamente(PDOMigrationRepository $repository): void
+    {
+        $repository->remove(2);
+
+        
+        $databaseType = new DatabaseType(
+            2,
+            'SQL',
+            true
+        );
+        $databaseConfig = [
+            'dsn' => 'sqlite::memory:',
+            'user' => '',
+            'password' => '',
+        ];
+
+        $collection  = new Collection(
+            1,
+            new PDODatabase(
+                2,
+                $databaseType,
+                'Origem',
+                $databaseConfig,
+            ),
+            new PDODatabase(
+                3,
+                $databaseType,
+                'Destino',
+                $databaseConfig,
+            ),
+            null
+        );
+
+        $migrationList = $repository->listByCollection($collection);
+        
+        self::assertCount(
+            1,
+            $migrationList,
+        );
+    }
+
 }

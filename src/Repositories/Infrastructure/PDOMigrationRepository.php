@@ -83,7 +83,7 @@ class PDOMigrationRepository implements MigrationRepository
         );
     }
 
-    public function save(array $migrationData): void
+    public function save(array &$migrationData): void
     {
         $function_name = is_null($migrationData['id']) ? 'insert' : 'update';
 

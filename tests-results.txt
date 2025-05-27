@@ -36,6 +36,9 @@ PDODatabase Type Repository
 
 PDOMigration Repository
  [x] Repository deve listar migracoes de uma collection corretamente with data set #0
+ [x] Repository deve inserir migracao corretamente with data set #0
+ [x] Repository deve alterar migracao corretamente with data set #0
+ [x] E repository deve remover migracao corretamente with data set #0
 
 PDOTreatment Repository
  [x] Repository deve listar corretamente with data set #0
