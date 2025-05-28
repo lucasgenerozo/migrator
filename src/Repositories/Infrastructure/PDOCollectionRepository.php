@@ -25,8 +25,11 @@ class PDOCollectionRepository implements CollectionRepository
         );
     }
 
-    public static function hydrateCollection(array $data): Collection
+    public function hydrateCollection(array $data): Collection
     {
+        $data['origin'] = $this->databaseRepository->find($data['database_origin']);
+        $data['destiny'] = $this->databaseRepository->find($data['database_destiny']);
+
         return new Collection(
             $data['id'],
             $data['origin'],
@@ -48,9 +51,6 @@ class PDOCollectionRepository implements CollectionRepository
             );
         }
 
-        $data['origin'] = $this->databaseRepository->find($data['database_origin']);
-        $data['destiny'] = $this->databaseRepository->find($data['database_destiny']);
-
         return self::hydrateCollection($data);
     }
 
@@ -69,7 +69,7 @@ class PDOCollectionRepository implements CollectionRepository
         $collectionList = [];
 
         foreach ($collectionDataList as $collectionData) {
-            $collectionList = self::hydrateCollection($collectionData);
+            $collectionList[] = self::hydrateCollection($collectionData);
         }
 
         return $collectionList;

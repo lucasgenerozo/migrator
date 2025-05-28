@@ -60,6 +60,8 @@ class Collection extends Entity
     {
         return [
             'id' => $this->id,
+            'database_origin' => $this->origin->getId(),
+            'database_destiny' => $this->destiny->getId(),
         ];
     }
 

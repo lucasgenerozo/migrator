@@ -10,8 +10,22 @@ use LucasGenerozo\Migrator\Repositories\Infrastructure\PDOMigrationRepository;
 use LucasGenerozo\Migrator\Repositories\Infrastructure\PDOTreatmentRepository;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertEquals;
+
 class PDOCollectionRepositoryTest extends TestCase
 {
+    private $databaseRepository;
+
+    public function setUp(): void
+    {
+        $pdo = self::sqlitePDO();
+
+        $this->databaseRepository = new PDODatabaseRepository(
+            $pdo,
+            new PDODatabaseTypeRepository($pdo),
+        );
+    }
+
     private static function sqlitePDO(): PDO
     {
         $pdo = new PDO('sqlite::memory:');
@@ -107,6 +121,39 @@ class PDOCollectionRepositoryTest extends TestCase
         ];
     }
 
+    private function compareCollections(Collection $collection, Collection $collectionExpected): void
+    {
+        self::assertEquals(
+            $collection->getId(),
+            $collectionExpected->getId(),
+        );
+
+        self::assertEquals(
+            $collection->getOriginDatabase()->getId(),
+            $collectionExpected->getOriginDatabase()->getId(),
+        );
+
+        self::assertEquals(
+            $collection->getDestinyDatabase()->getId(),
+            $collectionExpected->getDestinyDatabase()->getId(),
+        );
+    }
+
+    private function compareCollectionList(array $collectionList, array $collectionExpectedList): void
+    {
+        self::assertCount(
+            count($collectionExpectedList),
+            $collectionList,
+        );
+
+        foreach ($collectionExpectedList as $idx => $collectionExpected) {
+            
+            $collection = $collectionList[$idx];
+
+            $this->compareCollections($collection, $collectionExpected);
+        }
+    }
+
     /** @dataProvider providerCollectionRepository */
     public function testCollectionRepositoryDeveEncontrarCollectionCorretamente(PDOCollectionRepository $collectionRepository): void
     {
@@ -140,19 +187,74 @@ class PDOCollectionRepositoryTest extends TestCase
             null
         );
 
-        self::assertEquals(
-            $collection->getId(),
-            $collectionExpected->getId(),
+        $this->compareCollections($collection, $collectionExpected);
+    }
+
+    /** @dataProvider providerCollectionRepository */
+    public function testRepositoryDeveListarColecoesCorretamente(PDOCollectionRepository $repository): void
+    {
+        $collectionList = $repository->list();
+
+        $collection1 = $this->databaseRepository->find(1);
+        $collection2 = $this->databaseRepository->find(2);
+        $collection3 = $this->databaseRepository->find(3);
+
+        $collectionExpectedList = [
+            new Collection(
+                1,
+                $collection2,
+                $collection3,
+            ),
+            new Collection(
+                2,
+                $collection1,
+                $collection2,
+            ),
+        ];
+
+        $this->compareCollectionList($collectionList, $collectionExpectedList);
+    }
+    
+    /** @dataProvider providerCollectionRepository */
+    public function testRepositoryDeveInserirRegistroCorretamente(PDOCollectionRepository $repository): void
+    {
+        $collection1 = $this->databaseRepository->find(1);
+        $collection2 = $this->databaseRepository->find(2);
+        $collection3 = $this->databaseRepository->find(3);
+
+        $newCollection = new Collection(
+            null,
+            $collection1,
+            $collection3,
         );
 
-        self::assertEquals(
-            $collection->getOriginDatabase()->getId(),
-            $collectionExpected->getOriginDatabase()->getId(),
-        );
+        $repository->save($newCollection);
 
         self::assertEquals(
-            $collection->getDestinyDatabase()->getId(),
-            $collectionExpected->getDestinyDatabase()->getId(),
+            3,
+            $newCollection->getId(),
         );
+        
+        $collectionList = $repository->list();
+
+        $collectionExpectedList = [
+            new Collection(
+                1,
+                $collection2,
+                $collection3,
+            ),
+            new Collection(
+                2,
+                $collection1,
+                $collection2,
+            ),
+            new Collection(
+                3,
+                $collection1,
+                $collection3,
+            ),
+        ];
+
+        $this->compareCollectionList($collectionList, $collectionExpectedList);
     }
 }

@@ -9,6 +9,8 @@ Migration
 
 PDOCollection Repository
  [x] Collection repository deve encontrar collection corretamente with data set #0
+ [x] Repository deve listar colecoes corretamente with data set #0
+ [x] Repository deve inserir registro corretamente with data set #0
 
 PDOData Source
  [x] List all with data set #0
