@@ -257,4 +257,65 @@ class PDOCollectionRepositoryTest extends TestCase
 
         $this->compareCollectionList($collectionList, $collectionExpectedList);
     }
+    
+    /** @dataProvider providerCollectionRepository */
+    public function testRepositoryDeveAlterarRegistroCorretamente(PDOCollectionRepository $repository): void
+    {
+        $collection1 = $this->databaseRepository->find(1);
+        $collection2 = $this->databaseRepository->find(2);
+        $collection3 = $this->databaseRepository->find(3);
+
+        $newCollection = new Collection(
+            2,
+            $collection1,
+            $collection3,
+        );
+
+        $repository->save($newCollection);
+
+        self::assertEquals(
+            2,
+            $newCollection->getId(),
+        );
+        
+        $collectionList = $repository->list();
+
+        $collectionExpectedList = [
+            new Collection(
+                1,
+                $collection2,
+                $collection3,
+            ),
+            new Collection(
+                2,
+                $collection1,
+                $collection3,
+            ),
+        ];
+
+        $this->compareCollectionList($collectionList, $collectionExpectedList);
+    }
+
+    /** @dataProvider providerCollectionRepository */
+    public function testRepositoryDeveRemoverRegistroCorretamente(PDOCollectionRepository $repository): void
+    {
+        $repository->remove(1);
+
+        $collection1 = $this->databaseRepository->find(1);
+        $collection2 = $this->databaseRepository->find(2);
+        $collection3 = $this->databaseRepository->find(3);
+
+
+        $collectionList = $repository->list();
+
+        $collectionExpectedList = [
+            new Collection(
+                2,
+                $collection1,
+                $collection3,
+            ),
+        ];
+
+        $this->compareCollectionList($collectionList, $collectionExpectedList);
+    }
 }

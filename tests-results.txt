@@ -11,6 +11,8 @@ PDOCollection Repository
  [x] Collection repository deve encontrar collection corretamente with data set #0
  [x] Repository deve listar colecoes corretamente with data set #0
  [x] Repository deve inserir registro corretamente with data set #0
+ [x] Repository deve alterar registro corretamente with data set #0
+ [x] Repository deve remover registro corretamente with data set #0
 
 PDOData Source
  [x] List all with data set #0
@@ -28,13 +30,16 @@ PDODatabase
 
 PDODatabase Repository
  [x] Repositorio deve encontrar registro corretamente with data set #0
+ [x] Repositorio deve listar registros corretamente with data set #0
  [x] Repositorio deve lancar excecao caso nao encontre registro with data set #0
  [x] Repositorio deve inserir registro corretamente with data set #0
  [x] Repositorio deve alterar registro corretamente with data set #0
  [x] Repositorio deve remover registro corretamente with data set #0
 
 PDODatabase Type Repository
- [x] Repository deve listar corretamente
+ [x] Repository deve listar corretamente with data set #0
+ [x] Repositorio deve encontrar registro corretamente with data set #0
+ [x] Repositorio deve lancar excecao caso nao encontre o registro with data set #0
 
 PDOMigration Repository
  [x] Repository deve listar migracoes de uma collection corretamente with data set #0

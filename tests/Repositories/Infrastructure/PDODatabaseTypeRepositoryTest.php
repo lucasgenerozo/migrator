@@ -1,5 +1,6 @@
 <?php
 
+use LucasGenerozo\Migrator\Exceptions\ResourceNotFound;
 use LucasGenerozo\Migrator\Models\Domain\Database\DatabaseType;
 use LucasGenerozo\Migrator\Repositories\Infrastructure\PDODatabaseTypeRepository;
 use PHPUnit\Framework\TestCase;
@@ -28,13 +29,50 @@ class PDODatabaseTypeRepositoryTest extends TestCase
         return $pdo;
     }
 
-    public function testRepositoryDeveListarCorretamente(): void
+    public static function providerRepository(): array
     {
-        $repository = new PDODatabaseTypeRepository(self::sqlitePDO());
+        return [
+            [
+                 new PDODatabaseTypeRepository(self::sqlitePDO()),
+            ],
+        ];
+    }
 
+    private static function callPrivateProperty(
+        mixed $object, 
+        string $property
+    ): mixed {
+        $reflection = new ReflectionClass($object);
+        $property = $reflection->getProperty($property);
+        $property->setAccessible(true);
+    
+        return $property->getValue($object);
+    }
+
+    public function compareTypes(DatabaseType $type, DatabaseType $typeExpected): void
+    {
+        self::assertEquals(
+            $typeExpected->getId(),
+            $type->getId(),
+        );
+
+        self::assertEquals(
+            self::callPrivateProperty($typeExpected, 'name'),
+            self::callPrivateProperty($type, 'name'),
+        );
+        
+        self::assertEquals(
+            $typeExpected->isWritable(),
+            $type->isWritable(),
+        );
+    }
+
+    /** @dataProvider providerRepository */
+    public function testRepositoryDeveListarCorretamente(PDODatabaseTypeRepository $repository): void
+    {
         $typeList = $repository->list();
 
-        $expected = [
+        $typeExpectedList = [
             new DatabaseType(
                 1,
                 'JSON',
@@ -52,9 +90,36 @@ class PDODatabaseTypeRepositoryTest extends TestCase
             ),
         ];
 
-        self::assertEqualsCanonicalizing(
-            $expected,
-            $typeList,
+        self::assertCount(
+            3,
+            $typeList
         );
+
+        foreach ($typeList as $idx => $type) {
+            $this->compareTypes($type, $typeExpectedList[$idx]);
+        }
+    }
+
+    /** @dataProvider providerRepository */
+    public function testRepositorioDeveEncontrarRegistroCorretamente(PDODatabaseTypeRepository $repository): void
+    {
+        $type = $repository->find(1);
+
+        $this->compareTypes(
+            $type,
+            new DatabaseType(
+                1,
+                'JSON',
+                false,
+            ),
+        );
+    }
+
+    /** @dataProvider providerRepository */
+    public function testRepositorioDeveLancarExcecaoCasoNaoEncontreORegistro(PDODatabaseTypeRepository $repository): void
+    {
+        $this->expectException(ResourceNotFound::class);
+
+        $repository->find(4);
     }
 }

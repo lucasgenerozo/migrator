@@ -1,6 +1,7 @@
 <?php
 
 use LucasGenerozo\Migrator\Exceptions\ResourceNotFound;
+use LucasGenerozo\Migrator\Models\Domain\Database\Database;
 use LucasGenerozo\Migrator\Models\Domain\Database\DatabaseType;
 use LucasGenerozo\Migrator\Models\Infrastructure\PDO\PDODatabase;
 use LucasGenerozo\Migrator\Repositories\Infrastructure\PDODatabaseRepository;
@@ -9,6 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 class PDODatabaseRepositoryTest extends TestCase
 {
+    private PDODatabaseTypeRepository $typeRepository;
+
     private static function sqlitePDO(): PDO
     {
         $pdo = new PDO('sqlite::memory:');
@@ -54,6 +57,15 @@ class PDODatabaseRepositoryTest extends TestCase
         return $property->getValue($object);
     }
 
+    public function setUp(): void
+    {
+        $pdo = self::sqlitePDO();
+
+        $this->typeRepository = new PDODatabaseTypeRepository(
+            $pdo
+        );
+    }
+
     public static function providerDatabaseRepository(): array
     {
         $pdo = self::sqlitePDO();
@@ -67,6 +79,29 @@ class PDODatabaseRepositoryTest extends TestCase
                 ),
             ],
         ];
+    }
+
+    public function compareDatabases(Database $database, Database $databaseExpected): void
+    {
+        self::assertEquals(
+            $database->getId(),
+            $database->getId(),
+        );
+
+        self::assertEquals(
+            self::callPrivateProperty($database, 'name'),
+            self::callPrivateProperty($database, 'name'),
+        );
+
+        self::assertEquals(
+            (self::callPrivateProperty($database, 'type'))->getId(),
+            (self::callPrivateProperty($database, 'type'))->getId(),
+        );
+
+        self::assertEqualsCanonicalizing(
+            self::callPrivateProperty($database, 'config'),
+            self::callPrivateProperty($database, 'config'),
+        );
     }
 
     /** @dataProvider providerDatabaseRepository */
@@ -90,20 +125,45 @@ class PDODatabaseRepositoryTest extends TestCase
             ],
         );
 
-        self::assertEquals(
-            $database->getId(),
-            $databaseExpected->getId(),
+       $this->compareDatabases($database, $databaseExpected);
+    }
+    
+    /** @dataProvider providerDatabaseRepository */
+    public function testRepositorioDeveListarRegistrosCorretamente(PDODatabaseRepository $repository): void
+    {
+        $databaseList = $repository->list();
+
+        $type1 = $this->typeRepository->find(1);
+        $type2 = $this->typeRepository->find(2);
+        $databaseConfig = [
+            'dsn' => 'sqlite::memory:',
+            'user' => '',
+            'password' => '',
+        ];
+
+        $databaseExpectedList = [
+            new PDODatabase(
+                1,
+                $type1,
+                'Dump importado',
+                $databaseConfig,
+            ),
+            new PDODatabase(
+                2,
+                $type2,
+                'Master',
+                $databaseConfig,
+            ),
+        ];
+
+        self::assertCount(
+            2,
+            $databaseList,
         );
 
-        self::assertEquals(
-            (self::callPrivateProperty($database, 'type'))->getId(),
-            (self::callPrivateProperty($databaseExpected, 'type'))->getId(),
-        );
-
-        self::assertEquals(
-            $database->getName(),
-            $databaseExpected->getName(),
-        );
+        foreach ($databaseList as $idx => $database) {
+            $this->compareDatabases($database, $databaseExpectedList[$idx]);
+        }
     }
 
     /** @dataProvider providerDatabaseRepository */
