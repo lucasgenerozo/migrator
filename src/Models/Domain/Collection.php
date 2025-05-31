@@ -23,7 +23,7 @@ class Collection extends Entity
 
     public function getDestinyDatabase(): Database
     {
-        return $this->origin;
+        return $this->destiny;
     }
 
     public function getMigrations(): array

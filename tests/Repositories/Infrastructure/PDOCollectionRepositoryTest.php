@@ -312,7 +312,7 @@ class PDOCollectionRepositoryTest extends TestCase
             new Collection(
                 2,
                 $collection1,
-                $collection3,
+                $collection2,
             ),
         ];
 
