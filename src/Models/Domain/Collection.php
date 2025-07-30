@@ -26,7 +26,7 @@ class Collection extends Entity
         return $this->destiny;
     }
 
-    public function getMigrations(): array
+    public function getMigrations(): ?array
     {
         return $this->migrations;
     }
