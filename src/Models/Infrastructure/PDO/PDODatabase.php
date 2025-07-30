@@ -2,6 +2,7 @@
 namespace LucasGenerozo\Migrator\Models\Infrastructure\PDO;
 
 use InvalidArgumentException;
+use LucasGenerozo\Migrator\Exceptions\DriverNotSupportedException;
 use LucasGenerozo\Migrator\Models\Domain\Database\Database;
 use LucasGenerozo\Migrator\Models\Domain\Database\DatabaseType;
 use LucasGenerozo\Migrator\Models\Domain\DataSource\DataSource;
@@ -13,6 +14,7 @@ use PDO;
 class PDODatabase extends Entity implements Database
 {
     private PDO $connection;
+    private $driver;
 
     public function __construct(
         ?int $id,
@@ -42,6 +44,7 @@ class PDODatabase extends Entity implements Database
             $config['password'],
         );
         $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        $this->driver = $this->connection->getAttribute(PDO::ATTR_DRIVER_NAME);
     }
 
     public function getName(): string
@@ -87,5 +90,25 @@ class PDODatabase extends Entity implements Database
             $data['name'],
             $data['config'],
         );
+    }
+
+    public function listDataSources(): array
+    {
+        $dataSourceList = [];
+        if ($this->driver == 'sqlite') {
+            $stmt = $this->connection->query("
+                SELECT name 
+                FROM sqlite_master 
+                WHERE type='table' 
+                AND name NOT LIKE 'sqlite_%'
+            ");
+
+            $dataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $dataSourceList = array_column($dataList, 'name');
+        } else {
+            throw new DriverNotSupportedException("O método 'listDataSource' não foi implementado para o driver '$this->driver'");
+        }
+
+        return $dataSourceList;
     }
 }

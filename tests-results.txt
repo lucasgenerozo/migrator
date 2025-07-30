@@ -27,6 +27,7 @@ PDODatabase
  [x] Database nao pode ser iniciada com key password faltando na config
  [x] Database com tipo writable deve retornar data source writable
  [x] Database sem tipo writable deve retornar data source
+ [x] Database deve listar datasources corretamente
 
 PDODatabase Repository
  [x] Repositorio deve encontrar registro corretamente with data set #0

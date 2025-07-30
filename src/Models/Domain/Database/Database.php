@@ -17,4 +17,6 @@ interface Database
     public function getId(): ?int;
     public function getDataSource(string $name, ?array $with = []): ?DataSource;
     public function toArray(): array;
+    public function listDataSources(): array;
+    
 }
