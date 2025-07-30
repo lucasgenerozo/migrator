@@ -20,6 +20,7 @@ PDOData Source
  [x] List by with data set #0
  [x] First by with data set #0
  [x] Data source nao deve permitir inicializacao com p d o sem fetch mode como assoc
+ [x] Data source deve listar informacoes de coluna corretamente with data set #0
 
 PDODatabase
  [x] Database nao pode ser iniciada com key dsn faltando na config

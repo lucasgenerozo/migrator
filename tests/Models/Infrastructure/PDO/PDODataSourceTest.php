@@ -123,4 +123,18 @@ class PDODataSourceTest extends TestCase
             new PDO('sqlite::memory:')
         );
     }
+
+    /** @dataProvider usersPdoDataSource */
+    public function testDataSourceDeveListarInformacoesDeColunaCorretamente(PDODataSource $dataSource): void
+    {
+        $columnDataList = $dataSource->listColumns();
+
+        self::assertEqualsCanonicalizing(
+            [
+                'id',
+                'name',
+            ],
+            $columnDataList,
+        );
+    }
 }

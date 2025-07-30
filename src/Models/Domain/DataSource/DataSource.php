@@ -16,4 +16,5 @@ interface DataSource
     public function listByCallback(callable $callback): ?array;
     public function listBy(array $searches, int $limit = 0): ?array;
     public function firstBy(array $searches): ?array;
+    public function listColumns(): array;
 }
