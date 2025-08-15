@@ -132,7 +132,7 @@ class Migration extends Entity
         return [
             'id' => $this->id,
             'from' => $this->from->getName(),
-            'to' => $this->from->getName(),
+            'to' => $this->to->getName(),
             'connections' => $this->connections,
             'status' => $this->status->value,
         ];
