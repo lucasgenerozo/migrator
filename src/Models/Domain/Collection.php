@@ -47,12 +47,7 @@ class Collection extends Entity
 
             $from = $this->getOriginDatabase()->getDataSource($migration->from, $migration->fromWith);
             $to = $this->getDestinyDatabase()->getDataSource($migration->to, $migration->toWith);
-
-            /*$this->migrations[] = new Migration(
-                $from,
-                $to,
-                $migration->connections
-            );*/
+            
         }
     }
 
